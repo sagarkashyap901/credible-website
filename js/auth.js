@@ -75,7 +75,8 @@ window.CREDIBLE_SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
     })
   );
 
-  /* ---- Sign up (with email verification) ---- */
+  /* ---- Sign up (email verification link — Site URL must be set correctly
+     in Supabase → Authentication → URL Configuration → Site URL) ---- */
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!configured) return notConfigured();
@@ -87,7 +88,10 @@ window.CREDIBLE_SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
     const { error } = await sb.auth.signUp({
       email,
       password,
-      options: { data: { full_name: name } }
+      options: {
+        data: { full_name: name },
+        emailRedirectTo: window.location.origin + "/index.html"
+      }
     });
 
     if (error) return show(error.message, "err");
