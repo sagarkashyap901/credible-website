@@ -26,7 +26,9 @@
   /* ---- Content gating: only runs on articles marked data-premium="true" ---- */
   if (isPremiumPage) {
     const gate = document.querySelector("[data-paywall-block]");
-    const hideOnLock = document.querySelectorAll(".article-hero, .prose, .related, .article-end");
+    const hideOnLock = document.querySelectorAll(
+      ".article-hero, .prose, .figure, .related, .article-end, .cta:not(.paywall-gate)"
+    );
 
     function lock() {
       hideOnLock.forEach((el) => (el.style.display = "none"));
