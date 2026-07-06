@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://credible-media.netlify.app/sitemap.xml

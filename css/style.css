@@ -1,0 +1,1632 @@
+/* ==========================================================================
+   CREDIBLE — style.css
+   Geopolitics, Indian politics, global affairs & technology for Gen Z.
+   Design system: white paper, ink text, electric ultramarine accent.
+   Type: Archivo (display/UI) · Newsreader (article prose) · Space Mono (data)
+   ========================================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  --paper:      #ffffff;
+  --wash:       #f6f7f9;
+  --ink:        #16181d;
+  --ink-soft:   #3c414b;
+  --gray:       #6e7480;
+  --line:       #e7e9ee;
+  --accent:     #2430ff;   /* electric ultramarine */
+  --accent-ink: #1a24cf;
+  --accent-dim: #eceeff;
+
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body:    "Newsreader", Georgia, serif;
+  --font-mono:    "Inter", system-ui, sans-serif;   /* two-font system: labels use Inter */
+
+  --max: 1200px;
+  --gutter: 24px;
+  --radius: 10px;
+
+  --shadow-card: 0 1px 2px rgba(22, 24, 29, .05), 0 8px 24px rgba(22, 24, 29, .06);
+  --shadow-lift: 0 2px 4px rgba(22, 24, 29, .06), 0 16px 40px rgba(36, 48, 255, .12);
+}
+
+/* ---------- 2. Reset & base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-ink); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 0 0 .4em;
+  font-weight: 800;
+}
+
+.container {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--gray);
+}
+
+/* ---------- 3. Masthead ---------- */
+.masthead {
+  border-bottom: 1px solid var(--line);
+}
+
+.masthead-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px var(--gutter);
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 30px;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.brand:hover { color: var(--ink); }
+
+.brand .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-2px);
+  transition: transform .3s ease;
+}
+.brand:hover .dot { transform: translateY(-2px) scale(1.35); }
+
+.masthead-date {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray);
+  letter-spacing: .06em;
+}
+
+.masthead-actions { display: flex; align-items: center; gap: 14px; }
+
+/* ---------- 4. Wire ticker (signature) ---------- */
+.ticker {
+  background: var(--ink);
+  color: #fff;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1;
+}
+
+.ticker-track {
+  display: flex;
+  gap: 48px;
+  white-space: nowrap;
+  padding: 9px 0;
+  width: max-content;
+  animation: ticker 46s linear infinite;
+}
+
+.ticker span { display: inline-flex; align-items: center; gap: 10px; }
+.ticker b { color: var(--accent-dim); font-weight: 700; }
+.ticker i {
+  font-style: normal;
+  color: var(--accent);
+  background: #fff;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: .08em;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ---------- 5. Sticky nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  transition: box-shadow .25s ease;
+}
+.nav.is-stuck { box-shadow: 0 6px 24px rgba(22, 24, 29, .07); }
+
+.nav-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 54px;
+}
+
+.nav-links { display: flex; gap: 4px; }
+
+.nav-links a {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  padding: 8px 14px;
+  border-radius: 999px;
+  position: relative;
+  transition: color .18s ease, background .18s ease;
+}
+.nav-links a:hover { color: var(--ink); background: var(--wash); }
+.nav-links a.active { color: var(--accent); background: var(--accent-dim); }
+
+.nav-brand-mini {
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  display: none;
+  align-items: baseline;
+  gap: 4px;
+}
+.nav-brand-mini .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.btn-accent { background: var(--accent); color: #fff; }
+.btn-accent:hover { background: var(--accent-ink); color: #fff; transform: translateY(-1px); box-shadow: var(--shadow-lift); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.btn-ghost:hover { border-color: var(--ink); }
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+.hamburger span {
+  width: 22px; height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .25s ease;
+}
+.hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ---------- 6. Abstract editorial art (image placeholders) ---------- */
+.art {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--wash);
+  aspect-ratio: 16 / 10;
+}
+.art::after {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(22,24,29,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22,24,29,.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mix-blend-mode: multiply;
+}
+.art-1 { background: linear-gradient(135deg, #2430ff 0%, #7b83ff 55%, #dfe2ff 100%); }
+.art-2 { background: linear-gradient(150deg, #16181d 0%, #3c414b 60%, #2430ff 130%); }
+.art-3 { background: linear-gradient(135deg, #dfe2ff 0%, #9aa2ff 50%, #2430ff 100%); }
+.art-4 { background: linear-gradient(160deg, #f6f7f9 0%, #c9cdff 60%, #2430ff 140%); }
+.art-5 { background: linear-gradient(140deg, #101226 0%, #2430ff 80%); }
+.art-6 { background: linear-gradient(125deg, #7b83ff 0%, #2430ff 55%, #101226 100%); }
+
+.art .tag {
+  position: absolute;
+  bottom: 12px; left: 12px;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 5px 9px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+/* ---------- 7. Hero ---------- */
+.hero {
+  padding: 48px 0 56px;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.hero .art { aspect-ratio: 4 / 3; box-shadow: var(--shadow-card); }
+
+.hero h1 {
+  font-size: clamp(34px, 4.6vw, 56px);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  margin: 14px 0 16px;
+}
+.hero h1 a { color: var(--ink); }
+.hero h1 a:hover { color: var(--accent); }
+
+.hero .standfirst {
+  font-family: var(--font-body);
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0 0 20px;
+  max-width: 32em;
+}
+
+/* ---------- 8. Section blocks & card grid ---------- */
+.section { padding: 56px 0; }
+.section + .section { border-top: 1px solid var(--line); }
+.section.washed { background: var(--wash); }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.section-head h2 { font-size: 26px; margin: 0; }
+.section-head .more {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: var(--radius);
+  transition: transform .22s ease;
+}
+.card:hover { transform: translateY(-4px); }
+.card:hover .art { box-shadow: var(--shadow-lift); }
+.card .art { transition: box-shadow .22s ease; }
+
+.card h3 {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  margin: 2px 0 0;
+}
+.card h3 a { color: var(--ink); }
+.card h3 a:hover { color: var(--accent); }
+
+.card .excerpt {
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: var(--gray);
+  margin: 0;
+}
+
+/* List-style rows (Data rail, section pages) */
+.row-list { display: flex; flex-direction: column; }
+.row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+}
+.row .art { aspect-ratio: 16 / 10; }
+.row h3 { font-size: 20px; margin: 4px 0 6px; }
+.row h3 a { color: var(--ink); }
+.row h3 a:hover { color: var(--accent); }
+.row p { font-family: var(--font-body); color: var(--gray); margin: 0; font-size: 15.5px; }
+
+/* ---------- 9. Article template ---------- */
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0;
+  background: var(--accent);
+  z-index: 100;
+}
+
+.article-header {
+  max-width: 760px;
+  margin: 56px auto 36px;
+  padding: 0 var(--gutter);
+}
+
+.article-header h1 {
+  font-size: clamp(36px, 5vw, 58px);   /* Bloomberg-scale headline */
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin: 14px 0 18px;
+}
+
+.standfirst {
+  font-family: var(--font-body);
+  font-size: 22px;                      /* Bloomberg-style dek */
+  line-height: 1.5;
+  color: var(--gray);
+  margin: 0 0 24px;
+}
+
+.byline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.byline .avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #7b83ff);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.byline .who { line-height: 1.3; }
+.byline .who b { font-size: 14.5px; }
+.byline .who .meta { display: block; margin-top: 2px; }
+
+.article-hero {
+  max-width: 980px;
+  margin: 0 auto 44px;
+  padding: 0 var(--gutter);
+}
+.article-hero .art { aspect-ratio: 21 / 9; }
+.article-hero figcaption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 10px;
+}
+
+.prose {
+  max-width: 680px;         /* ≈ 60–65 ch at 18px Newsreader */
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  font-family: var(--font-body);
+  font-size: 18px;          /* Bloomberg body: 18px */
+  line-height: 1.7;         /* Bloomberg leading */
+  color: var(--ink-soft);
+}
+
+.prose p { margin: 0 0 1.25em; }
+
+.prose > p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 3.3em;
+  float: left;
+  line-height: .82;
+  padding: 4px 10px 0 0;
+  color: var(--ink);
+}
+
+.prose h2 {
+  font-size: 28px;          /* Bloomberg section subhead */
+  letter-spacing: -0.02em;
+  margin: 1.7em 0 .55em;
+  color: var(--ink);
+}
+.prose h3 {
+  font-size: 22px;          /* Bloomberg minor subhead */
+  margin: 1.5em 0 .5em;
+  color: var(--ink);
+}
+
+.prose ul, .prose ol { margin: 0 0 1.25em; padding-left: 1.2em; }
+.prose li { margin-bottom: .5em; }
+.prose li::marker { color: var(--accent); font-weight: 700; }
+
+.prose blockquote {
+  margin: 2em 0;
+  padding: 4px 0 4px 22px;
+  border-left: 3px solid var(--accent);
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--ink);
+  font-style: italic;
+}
+
+.prose .key-stat {
+  font-family: var(--font-mono);
+  background: var(--accent-dim);
+  color: var(--accent-ink);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: .82em;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Inline figures & charts — Pudding style, breaking out of the text column */
+.figure {
+  max-width: 900px;
+  margin: 44px auto;
+  padding: 0 var(--gutter);
+}
+.figure .chart-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px 26px 20px;
+  box-shadow: var(--shadow-card);
+}
+.figure .chart-title { font-size: 17px; font-weight: 800; margin: 0 0 2px; letter-spacing: -0.01em; }
+.figure .chart-sub { font-family: var(--font-mono); font-size: 12px; color: var(--gray); margin: 0 0 18px; }
+.figure .chart-note { font-family: var(--font-mono); font-size: 11.5px; color: var(--gray); margin: 14px 0 0; }
+.figure svg { width: 100%; height: auto; display: block; }
+
+.bar-label { font-family: var(--font-mono); font-size: 11px; fill: var(--gray); }
+.bar-value { font-family: var(--font-mono); font-size: 11px; font-weight: 700; fill: var(--ink); }
+.bar { fill: var(--accent); }
+.bar.dim { fill: #c9cdff; }
+.gridline { stroke: var(--line); stroke-width: 1; }
+.dataline { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.dataline.dim { stroke: #c9cdff; }
+.datapoint { fill: var(--accent); }
+
+/* Share + subscribe CTA at article end */
+.article-end {
+  max-width: 680px;
+  margin: 48px auto 0;
+  padding: 28px var(--gutter) 0;
+  border-top: 1px solid var(--line);
+}
+.share {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.share .label { font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--gray); margin-right: 4px; }
+.share a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink);
+  transition: all .18s ease;
+}
+.share a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+.share svg { width: 17px; height: 17px; }
+
+.cta {
+  margin: 36px auto 72px;
+  max-width: 680px;
+  padding: 0 var(--gutter);
+}
+.cta-box {
+  background: var(--ink);
+  color: #fff;
+  border-radius: 16px;
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-box::after {
+  content: "";
+  position: absolute;
+  right: -60px; top: -60px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: .55;
+}
+.cta-box h2 { font-size: 24px; margin: 0 0 8px; color: #fff; }
+.cta-box p { color: #b9bdc7; margin: 0 0 20px; font-size: 15px; max-width: 34em; }
+.cta-form { display: flex; gap: 10px; position: relative; z-index: 1; flex-wrap: wrap; }
+.cta-form input {
+  flex: 1;
+  min-width: 200px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.2);
+  color: #fff;
+  border-radius: 999px;
+  padding: 11px 18px;
+  font-family: var(--font-display);
+  font-size: 14px;
+}
+.cta-form input::placeholder { color: #8d93a0; }
+
+/* ---------- 10. Section page header ---------- */
+.page-head {
+  padding: 52px 0 36px;
+  border-bottom: 1px solid var(--line);
+}
+.page-head h1 { font-size: clamp(34px, 5vw, 54px); font-weight: 900; margin: 8px 0 10px; }
+.page-head p {
+  font-family: var(--font-body);
+  color: var(--gray);
+  font-size: 17.5px;
+  margin: 0;
+  max-width: 40em;
+}
+
+/* ---------- 11. Subscribe page ---------- */
+.auth-wrap {
+  max-width: 980px;
+  margin: 64px auto 96px;
+  padding: 0 var(--gutter);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.auth-pitch h1 { font-size: clamp(30px, 4vw, 44px); font-weight: 900; margin: 10px 0 14px; }
+.auth-pitch p { font-family: var(--font-body); color: var(--ink-soft); font-size: 17px; }
+.auth-pitch ul { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-direction: column; gap: 12px; }
+.auth-pitch li { display: flex; gap: 10px; align-items: flex-start; font-size: 15.5px; }
+.auth-pitch li::before { content: "→"; color: var(--accent); font-weight: 800; font-family: var(--font-mono); }
+
+.auth-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 34px;
+  box-shadow: var(--shadow-card);
+}
+.auth-card h2 { font-size: 22px; margin: 0 0 20px; }
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: .01em;
+}
+.field input {
+  width: 100%;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--ink);
+  transition: border-color .18s ease;
+}
+.field input:focus { border-color: var(--accent); outline: none; }
+.auth-card .btn { width: 100%; justify-content: center; padding: 13px; font-size: 15px; }
+.auth-alt {
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--gray);
+  margin: 16px 0 0;
+}
+.auth-note {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--gray);
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+
+/* ---------- 12. Footer ---------- */
+.footer {
+  background: var(--ink);
+  color: #b9bdc7;
+  margin-top: 72px;
+}
+.footer-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 56px var(--gutter) 40px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+.footer .brand { color: #fff; font-size: 26px; }
+.footer .tagline { font-family: var(--font-body); font-size: 14.5px; margin: 12px 0 0; max-width: 26em; line-height: 1.6; }
+.footer h4 {
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  margin: 0 0 14px;
+  font-weight: 700;
+}
+.footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.footer a { color: #b9bdc7; font-size: 14.5px; transition: color .15s ease; }
+.footer a:hover { color: #fff; }
+.footer-base {
+  border-top: 1px solid rgba(255,255,255,.12);
+  padding: 20px var(--gutter);
+  max-width: var(--max);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: #8d93a0;
+}
+
+/* ---------- 12b. Search overlay ---------- */
+.search-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px; height: 38px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease;
+}
+.search-btn:hover { background: var(--wash); color: var(--accent); }
+.search-btn svg { width: 19px; height: 19px; }
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 24, 29, .55);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh var(--gutter) 0;
+}
+.search-overlay.open { display: flex; }
+
+.search-panel {
+  width: 100%;
+  max-width: 640px;
+  background: var(--paper);
+  border-radius: 16px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.35);
+  overflow: hidden;
+  animation: searchIn .22s ease;
+}
+@keyframes searchIn {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.search-input-row svg { width: 20px; height: 20px; color: var(--gray); flex-shrink: 0; }
+.search-input-row input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--ink);
+}
+.search-input-row input::placeholder { color: var(--gray); }
+.search-input-row .esc {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--gray);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 3px 7px;
+  cursor: pointer;
+  background: none;
+}
+
+.search-results {
+  max-height: 52vh;
+  overflow-y: auto;
+  padding: 8px;
+}
+.search-results a {
+  display: block;
+  padding: 13px 14px;
+  border-radius: 10px;
+  color: var(--ink);
+}
+.search-results a:hover, .search-results a.selected { background: var(--accent-dim); }
+.search-results .r-section {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.search-results .r-title { font-weight: 700; font-size: 15.5px; margin: 3px 0 2px; letter-spacing: -0.01em; }
+.search-results .r-excerpt {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: var(--gray);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.search-empty {
+  padding: 28px 20px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--gray);
+}
+
+/* ---------- 12c. Auth tabs & messages ---------- */
+.auth-tabs {
+  display: flex;
+  background: var(--wash);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 22px;
+}
+.auth-tabs button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 9px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--gray);
+  transition: all .18s ease;
+}
+.auth-tabs button.active {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 1px 4px rgba(22,24,29,.12);
+}
+
+.auth-msg {
+  display: none;
+  font-size: 13.5px;
+  border-radius: 10px;
+  padding: 11px 14px;
+  margin-bottom: 14px;
+  line-height: 1.45;
+}
+.auth-msg.show { display: block; }
+.auth-msg.ok   { background: #e8f7ee; color: #116632; }
+.auth-msg.err  { background: #fdecec; color: #a41623; }
+
+/* ---------- 12d. Key points box (Reuters-style) ---------- */
+.key-points {
+  max-width: 680px;
+  margin: 0 auto 36px;
+  padding: 0 var(--gutter);
+}
+.key-points-box {
+  background: var(--wash);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 20px 24px;
+}
+.key-points-box h2 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+.key-points-box ul { margin: 0; padding-left: 1.1em; }
+.key-points-box li {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.key-points-box li:last-child { margin-bottom: 0; }
+.key-points-box li::marker { color: var(--accent); }
+
+/* ---------- 12e. Related stories ---------- */
+.related {
+  max-width: 680px;
+  margin: 40px auto 0;
+  padding: 28px var(--gutter) 0;
+  border-top: 1px solid var(--line);
+}
+.related h2 { font-size: 20px; margin: 0 0 18px; }
+.related-list { display: flex; flex-direction: column; gap: 4px; }
+.related-list a {
+  display: block;
+  padding: 12px 14px;
+  margin: 0 -14px;
+  border-radius: 10px;
+  color: var(--ink);
+  transition: background .16s ease;
+}
+.related-list a:hover { background: var(--accent-dim); }
+.related-list .r-section {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.related-list .r-title { font-weight: 700; font-size: 16px; margin-top: 3px; letter-spacing: -0.01em; }
+
+/* ---------- 12f. Most read rail ---------- */
+.most-read-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 48px;
+  counter-reset: mostread;
+  list-style: none;
+  margin: 0; padding: 0;
+}
+.most-read-list li {
+  counter-increment: mostread;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.most-read-list li::before {
+  content: counter(mostread);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1;
+  color: var(--accent);
+  min-width: 34px;
+  letter-spacing: -0.03em;
+}
+.most-read-list h3 { font-size: 17px; margin: 0 0 4px; letter-spacing: -0.01em; }
+.most-read-list h3 a { color: var(--ink); }
+.most-read-list h3 a:hover { color: var(--accent); }
+
+@media (max-width: 680px) {
+  .most-read-list { grid-template-columns: 1fr; }
+}
+
+/* ---------- 13. Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .ticker-track { animation: none; }
+  * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+/* ---------- 14. Responsive ---------- */
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 26px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .auth-wrap { grid-template-columns: 1fr; gap: 36px; }
+}
+
+@media (max-width: 680px) {
+  .masthead-inner { padding: 16px var(--gutter); }
+  .masthead-date, .masthead-actions .btn-ghost { display: none; }
+  .brand { font-size: 24px; }
+
+  .hamburger { display: flex; }
+  .nav-brand-mini { display: inline-flex; }
+  .nav-links {
+    position: absolute;
+    top: 54px; left: 0; right: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    flex-direction: column;
+    padding: 12px var(--gutter) 18px;
+    gap: 2px;
+    display: none;
+    box-shadow: 0 20px 40px rgba(22,24,29,.08);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 12px 14px; font-size: 16px; }
+
+  .grid, .grid-2 { grid-template-columns: 1fr; }
+  .row { grid-template-columns: 1fr; gap: 12px; }
+  .section { padding: 40px 0; }
+  .hero { padding: 32px 0 40px; }
+  .prose { font-size: 17px; }
+  .cta-box { padding: 26px; }
+  .footer-inner { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* ==========================================================================
+   V4 — Single topbar, Bloomberg article typography, Reuters list, paywall
+   ========================================================================== */
+
+/* ---------- Single sticky topbar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  transition: box-shadow .25s ease;
+}
+.topbar.is-stuck { box-shadow: 0 6px 24px rgba(22,24,29,.07); }
+.topbar-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 64px;
+}
+.topbar .brand { font-size: 25px; }
+.topbar .nav-links { display: flex; gap: 2px; margin-left: 10px; }
+.topbar-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+@media (max-width: 860px) {
+  .topbar .nav-links {
+    position: absolute;
+    top: 64px; left: 0; right: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    flex-direction: column;
+    padding: 12px var(--gutter) 18px;
+    gap: 2px;
+    display: none;
+    box-shadow: 0 20px 40px rgba(22,24,29,.08);
+    margin-left: 0;
+  }
+  .topbar .nav-links.open { display: flex; }
+  .topbar .nav-links a { padding: 12px 14px; font-size: 16px; }
+  .topbar .hamburger { display: flex; order: -1; padding-left: 0; }
+  .topbar .btn-ghost { display: none; }
+  .topbar .brand { font-size: 22px; }
+}
+
+/* ---------- Bloomberg article typography ---------- */
+.article-header h1 {
+  font-size: clamp(32px, 4.2vw, 44px);   /* Bloomberg headline scale */
+  font-weight: 800;
+  color: #000000;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+.standfirst {
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.45;
+  color: #6f6f6f;                        /* Bloomberg dek gray */
+}
+.byline-line {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  color: #6f6f6f;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  margin: 0;
+}
+.byline-line b { color: #000; font-weight: 700; }
+
+.prose {
+  font-size: 18px;                       /* Bloomberg body */
+  line-height: 1.67;
+  color: #1a1a1a;                        /* dull black */
+}
+.prose p { margin: 0 0 1.35em; }
+.prose h2 { font-size: 26px; color: #000; letter-spacing: -0.015em; }
+.prose h3 { font-size: 21px; color: #000; }
+.prose blockquote { color: #000; }
+
+/* ---------- Reuters-style latest list ---------- */
+.news-row {
+  display: grid;
+  grid-template-columns: 1fr 176px;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+}
+.news-row .art { aspect-ratio: 3 / 2; }
+.news-row h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: -0.015em;
+  margin: 0 0 8px;
+  line-height: 1.25;
+}
+.news-row h3 a { color: #000; }
+.news-row h3 a:hover { color: var(--accent); }
+.news-row .meta { color: #6f6f6f; }
+@media (max-width: 680px) {
+  .news-row { grid-template-columns: 1fr 108px; gap: 16px; padding: 18px 0; }
+  .news-row h3 { font-size: 17px; }
+}
+
+/* Lead trio on homepage */
+.grid.lead .card h3 { font-size: 22px; }
+.grid.lead .excerpt { color: #6f6f6f; }
+
+/* ---------- ₹119/month paywall ---------- */
+.paywall .price { display: flex; align-items: baseline; gap: 6px; margin: 6px 0 14px; position: relative; z-index: 1; }
+.paywall .amount { font-family: var(--font-display); font-weight: 900; font-size: 46px; letter-spacing: -0.03em; color: #fff; }
+.paywall .per { font-family: var(--font-mono); font-size: 14px; color: #9aa2ff; }
+.paywall .perks { list-style: none; margin: 0 0 22px; padding: 0; display: flex; flex-direction: column; gap: 9px; position: relative; z-index: 1; }
+.paywall .perks li { color: #d4d7de; font-size: 14.5px; display: flex; gap: 10px; }
+.paywall .perks li::before { content: "→"; color: var(--accent); font-family: var(--font-mono); font-weight: 700; }
+.paywall .btn { position: relative; z-index: 1; }
+.paywall .fineprint { font-family: var(--font-mono); font-size: 11px; color: #8d93a0; margin: 14px 0 0; position: relative; z-index: 1; }
+
+/* ==========================================================================
+   V4.1 — Bloomberg-exact article typography
+   Reference: Bloomberg.com article pages
+   Headline & UI: Avenir Next (→ Mulish) · Body: Tiempos Text (→ Source Serif 4)
+   ========================================================================== */
+
+/* Headline — Bloomberg: ~40px desktop / 34px mobile, weight 800, pure black */
+.article-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 4vw, 40px);
+  font-weight: 800;
+  color: #000000;
+  line-height: 1.13;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+
+/* Standfirst / dek — Bloomberg uses the SANS here, gray, not serif */
+.standfirst {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 1.47;
+  color: #6f6f6f;
+  text-align: left;
+}
+
+/* Byline — small sans, gray */
+.byline-line { font-size: 13px; color: #6f6f6f; }
+.byline-line b { color: #000000; }
+
+/* Body — Bloomberg: Tiempos Text 18px / 29px leading, near-black, left aligned */
+.prose {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.61;
+  color: #1a1a1a;
+  text-align: left;
+}
+.prose p { margin: 0 0 1.4em; }
+
+/* Bloomberg does NOT use drop caps — remove ours */
+.prose > p:first-of-type::first-letter {
+  float: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  padding: 0;
+  color: inherit;
+}
+
+/* Subheads inside article — Bloomberg: bold sans, black */
+.prose h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 1.8em 0 .6em;
+}
+.prose h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: #000000;
+  margin: 1.5em 0 .5em;
+}
+
+/* Lists & quotes match body color */
+.prose li { color: #1a1a1a; }
+.prose blockquote { color: #000000; font-size: 21px; }
+
+/* Headlines across the rest of the site follow the same voice */
+.card h3, .news-row h3, .most-read-list h3 { color: #000000; }
+.card h3 a, .news-row h3 a, .most-read-list h3 a { color: #000000; }
+.hero h1, .page-head h1, .section-head h2 { color: #000000; }
+
+/* ==========================================================================
+   V5 — Editorial typography system (Inter + Newsreader)
+   Premium global-affairs publication: restrained, calm, built for longform.
+   Typography, color and spacing only — layout untouched.
+   ========================================================================== */
+
+/* ---------- Palette: warm paper, near-black ink, editorial grays ---------- */
+:root {
+  --paper:    #FAF9F6;   /* warm off-white, not stark */
+  --wash:     #F3F2ED;
+  --ink:      #131313;   /* near-black, not pure black */
+  --ink-body: #1D1D1D;   /* article body */
+  --ink-soft: #4B4B4B;   /* secondary / deck */
+  --gray:     #767676;   /* metadata, captions */
+  --line:     #E7E5DF;
+}
+body { background: var(--paper); color: var(--ink-body); font-family: var(--font-display); }
+
+/* ---------- Labels & metadata: Inter, tight, unobtrusive ---------- */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.meta {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--gray);
+  letter-spacing: 0;
+}
+.ticker { font-family: var(--font-display); font-size: 12.5px; font-weight: 600; letter-spacing: .03em; }
+.ticker i { font-family: var(--font-display); }
+.art .tag, .figure .chart-sub, .figure .chart-note, .article-hero figcaption,
+.bar-label, .bar-value, .search-results .r-section, .related-list .r-section,
+.auth-note, .footer h4, .footer-base, .paywall .per, .paywall .fineprint,
+.search-input-row .esc, .masthead-date {
+  font-family: var(--font-display);
+  letter-spacing: .02em;
+}
+.footer h4 { letter-spacing: .09em; font-weight: 600; }
+
+/* ---------- Headline system: Inter, compact, assertive ---------- */
+.article-header h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(33px, 4.6vw, 54px);   /* mobile 32–40 → desktop 48–60 */
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin: 10px 0 16px;                   /* tight to eyebrow, moderate to deck */
+}
+.page-head h1 {
+  font-weight: 800;
+  font-size: clamp(34px, 4.6vw, 50px);
+  letter-spacing: -0.022em;
+  line-height: 1.06;
+  color: var(--ink);
+}
+.section-head h2 {
+  font-weight: 700;
+  font-size: clamp(24px, 2.6vw, 30px);
+  letter-spacing: -0.018em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.card h3 {
+  font-weight: 700;
+  font-size: clamp(19px, 2vw, 23px);
+  letter-spacing: -0.012em;
+  line-height: 1.2;
+}
+.grid.lead .card h3 { font-size: clamp(20px, 2.2vw, 26px); }
+.news-row h3 {
+  font-weight: 700;
+  font-size: clamp(17.5px, 2vw, 22px);
+  letter-spacing: -0.012em;
+  line-height: 1.22;
+  margin: 0 0 7px;
+}
+.most-read-list h3 { font-weight: 700; font-size: clamp(16.5px, 1.8vw, 19px); letter-spacing: -0.01em; line-height: 1.25; }
+.card h3 a, .news-row h3 a, .most-read-list h3 a { color: var(--ink); }
+
+/* ---------- Deck / standfirst: Inter, Bloomberg-style ---------- */
+.standfirst {
+  font-family: var(--font-display);
+  font-weight: 450;
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin: 0 0 18px;                      /* slightly tighter to byline */
+}
+.card .excerpt, .grid.lead .excerpt {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.page-head p, .row p {
+  font-family: var(--font-display);
+  color: var(--ink-soft);
+  font-size: 16.5px;
+  line-height: 1.5;
+}
+
+/* ---------- Byline: crisp, subordinate ---------- */
+.byline-line {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray);
+  padding-top: 16px;
+}
+.byline-line b { color: var(--ink); font-weight: 600; }
+
+/* ---------- Article body: Newsreader, calm longform ---------- */
+.prose {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(17.5px, 1.6vw, 20px); /* mobile 17–18 → desktop 19–21 */
+  line-height: 1.64;
+  color: var(--ink-body);
+  max-width: 680px;                      /* ~65–70ch — intentionally constrained */
+}
+.prose p { margin: 0 0 1em; }            /* premium, calm paragraph rhythm */
+.prose em, .prose i { font-family: var(--font-body); font-style: italic; }
+
+/* Subheads: Inter, closer to the content below than above */
+.prose h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(24px, 2.8vw, 32px);
+  line-height: 1.11;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+  margin: 1.55em 0 .4em;
+}
+.prose h3 {
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: clamp(20px, 2.1vw, 24px);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 1.4em 0 .35em;
+}
+.prose ul, .prose ol { margin: 0 0 1.05em; }
+.prose li { margin-bottom: .45em; color: var(--ink-body); }
+
+/* Pull quote: Newsreader italic, restrained */
+.prose blockquote {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(20px, 2.2vw, 24px);
+  line-height: 1.42;
+  color: var(--ink);
+  border-left: 3px solid var(--accent);
+  margin: 1.7em 0;
+}
+
+.prose .key-stat { font-family: var(--font-display); font-weight: 600; letter-spacing: 0; }
+
+/* ---------- Article rhythm: header block spacing ---------- */
+.article-header { margin: 44px auto 30px; }
+.article-hero { margin: 0 auto 40px; }
+.article-hero figcaption { font-size: 13px; color: var(--gray); }
+
+/* ---------- UI text: Inter throughout ---------- */
+.btn { font-weight: 600; letter-spacing: 0; }
+.nav-links a { font-weight: 550; font-size: 14.5px; }
+.search-input-row input { font-weight: 450; }
+.search-results .r-title { font-weight: 650; }
+.related-list .r-title { font-weight: 650; }
+.footer .tagline { font-family: var(--font-display); font-size: 14px; line-height: 1.55; }
+.footer a { font-size: 14px; }
+.paywall .perks li { font-family: var(--font-display); font-size: 14.5px; }
+.cta-box h2 { font-weight: 700; letter-spacing: -0.015em; }
+.cta-box p { font-family: var(--font-display); }
+.auth-pitch p { font-family: var(--font-display); font-size: 16px; color: var(--ink-soft); }
+
+/* Cards: tighten internal spacing, publication-like */
+.card { gap: 10px; }
+.card .meta, .news-row .meta { font-size: 13px; }
+
+/* Most-read numerals stay restrained */
+.most-read-list li::before { font-weight: 800; font-size: 28px; color: var(--accent); }
+
+/* Chart typography */
+.figure .chart-title { font-weight: 700; letter-spacing: -0.01em; }
+
+/* ==========================================================================
+   V5.1 — Typography QA pass (art-direction refinements)
+   Findings fixed: fake intermediate weights, raw-blue prose links,
+   accent list markers, unconstrained deck measure, orphaned headlines,
+   default numerals in metadata, lead-story presence, mobile tracking.
+   ========================================================================== */
+
+/* Optical sizing on — Inter Display cuts for headlines, Text for UI */
+body { font-optical-sizing: auto; }
+.prose { font-optical-sizing: auto; }
+
+/* 1) HEADLINES — sharper, more intentional */
+.article-header h1 {
+  text-wrap: balance;                 /* no orphan words on the last line */
+  font-weight: 780;
+}
+.page-head h1, .section-head h2, .card h3, .news-row h3 { text-wrap: balance; }
+
+/* Lead trio deserves more presence than standard cards */
+.grid.lead .card h3 {
+  font-size: clamp(21px, 2.5vw, 28px);
+  font-weight: 760;
+  line-height: 1.16;
+  letter-spacing: -0.018em;
+}
+
+/* 3) DECK — clearly a deck, not a paragraph: constrained measure, distinct tone */
+.standfirst {
+  max-width: 30em;                    /* never runs body-width lines */
+  font-weight: 460;
+  font-size: clamp(18px, 2vw, 21px);
+  line-height: 1.42;
+  color: #545454;
+}
+
+/* 2) BODY — publication-grade paragraph setting */
+.prose p { text-wrap: pretty; }       /* avoids awkward rag and orphans */
+.prose a {
+  color: var(--ink);                  /* premium pubs don't scatter raw blue in body */
+  text-decoration: underline;
+  text-decoration-color: rgba(36, 48, 255, .45);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.prose a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.prose li::marker { color: var(--ink-soft); }   /* restrained, not startup-blue */
+
+/* 4) METADATA — tabular numerals so dates & figures set cleanly */
+.meta, .byline-line, .bar-label, .bar-value, .footer-base {
+  font-feature-settings: "tnum" 1;
+}
+.byline-line { font-size: 13.5px; letter-spacing: .005em; }
+.article-hero figcaption { font-size: 12.5px; letter-spacing: .01em; }
+
+/* 5) RHYTHM — micro-corrections */
+.article-header { margin: 42px auto 28px; }
+.article-header .eyebrow { display: inline-block; margin-bottom: 2px; }
+.prose h2 + p, .prose h3 + p { margin-top: 0; }
+.section-head { margin-bottom: 24px; }
+.grid.lead .card { gap: 11px; }
+
+/* 6) COLOR — one leak fixed: keep everything off pure black */
+.prose h2, .prose h3, .article-header h1 { color: var(--ink); }
+.figure .chart-title { color: var(--ink); }
+
+/* 7) MOBILE — headline tracking relaxes slightly at small sizes */
+@media (max-width: 680px) {
+  .article-header h1 { letter-spacing: -0.02em; font-size: clamp(31px, 8vw, 38px); }
+  .standfirst { font-size: 18px; line-height: 1.46; }
+  .prose { font-size: 17.5px; line-height: 1.66; }
+  .prose h2 { font-size: 25px; }
+  .grid.lead .card h3 { font-size: 21px; }
+  .byline-line { font-size: 13px; }
+}
+
+/* 8) EDITORIAL POLISH — quiet details paid publications get right */
+::selection { background: rgba(36, 48, 255, .14); color: var(--ink); }
+.prose { hanging-punctuation: first; }          /* progressive enhancement */
+.paywall .amount { font-weight: 800; letter-spacing: -0.02em; }
+.cta-box h2 { font-size: 23px; }
+
+/* ==========================================================================
+   V5.2 — EXACT Bloomberg article scale (final authority — overrides all above)
+   Bloomberg reference: H1 40px/700/1.05 · dek 18px/1.44 · body 18px/30px
+   Newsreader body set +1px vs Tiempos to match perceived size.
+   ========================================================================== */
+
+/* Headline — Bloomberg: 40px desktop, ~30px mobile, weight 700 (Bold, not Black) */
+.article-header h1 {
+  font-size: clamp(30px, 3.6vw, 40px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.014em;
+}
+
+/* Dek — Bloomberg: 18px flat, 1.44, gray */
+.standfirst {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.44;
+  color: #6f6f6f;
+}
+
+/* Body — Bloomberg: 18px / 30px leading; +1px desktop for Newsreader x-height */
+.prose {
+  font-size: 19px;
+  line-height: 1.65;      /* ≈ 31px, matches Bloomberg's 30px optically */
+}
+
+/* In-article subheads — Bloomberg: ~25px / ~20px, weight 700 */
+.prose h2 {
+  font-size: clamp(23px, 2.4vw, 26px);
+  font-weight: 700;
+  line-height: 1.15;
+}
+.prose h3 {
+  font-size: clamp(19px, 2vw, 21px);
+  font-weight: 700;
+}
+
+/* Byline & captions — Bloomberg: 13px */
+.byline-line { font-size: 13px; }
+
+/* Mobile — Bloomberg holds body at 18px, headline ~30px */
+@media (max-width: 680px) {
+  .article-header h1 { font-size: 30px; line-height: 1.1; letter-spacing: -0.012em; }
+  .standfirst { font-size: 18px; line-height: 1.44; }
+  .prose { font-size: 18px; line-height: 1.66; }
+  .prose h2 { font-size: 23px; }
+  .prose h3 { font-size: 19px; }
+}
+
+/* ==========================================================================
+   V5.3 — BODY TEXT SIZE FIX (final override — nothing overrides this)
+   Measured against Bloomberg + Medium mobile screenshots side by side:
+   their body renders at an effective 20–21px. Newsreader's small x-height
+   means it must be set LARGER than Tiempos/Charter to look the same size.
+   ========================================================================== */
+
+.prose {
+  font-size: 21px;          /* desktop — matches Bloomberg's rendered size */
+  line-height: 1.62;        /* ~34px leading, same feel as Bloomberg 18/30 */
+}
+
+.prose li { font-size: inherit; }
+.prose blockquote { font-size: 24px; }
+
+/* Mobile — the size your audience actually reads at */
+@media (max-width: 680px) {
+  .prose { font-size: 20px; line-height: 1.62; }
+  .prose h2 { font-size: 24px; }
+  .prose h3 { font-size: 20px; }
+  .prose blockquote { font-size: 22px; }
+}
+
+/* Standfirst scales up slightly so the deck doesn't look smaller than body */
+.standfirst { font-size: 19px; }
+@media (max-width: 680px) {
+  .standfirst { font-size: 18.5px; }
+}
+
+/* ==========================================================================
+   V5.4 — Headline/deck ratio + body spacing (final override)
+   Ref: Medium mobile H1 ≈ 42px vs deck ≈ 22px (strong contrast);
+   Bloomberg mobile body lines sit tighter than ours.
+   ========================================================================== */
+
+/* Headline UP — restore strong contrast over the deck */
+.article-header h1 {
+  font-size: clamp(36px, 4.4vw, 48px);
+  font-weight: 760;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+/* Deck stays modest — clearly subordinate to the headline */
+.standfirst {
+  font-size: 19px;
+  line-height: 1.42;
+  color: #6f6f6f;
+}
+
+/* Body — tighter, more elegant line spacing */
+.prose {
+  line-height: 1.5;
+}
+.prose p { margin: 0 0 .95em; }
+
+@media (max-width: 680px) {
+  .article-header h1 { font-size: 36px; line-height: 1.1; }
+  .standfirst { font-size: 18px; line-height: 1.44; }
+  .prose { line-height: 1.5; }
+}
+
+/* ==========================================================================
+   V5.5 — Homepage lead trio: bigger headlines (titles only, excerpts unchanged)
+   ========================================================================== */
+.grid.lead .card h3 {
+  font-size: clamp(25px, 3vw, 30px);
+  font-weight: 760;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+}
+@media (max-width: 680px) {
+  .grid.lead .card h3 { font-size: 27px; }
+}
