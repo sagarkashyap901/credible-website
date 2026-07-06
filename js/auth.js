@@ -26,8 +26,8 @@
      Supabase dashboard → Authentication → Users.
    ──────────────────────────────────────────────────────────────── */
 
-const SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE";
-const SUPABASE_ANON_KEY = "PASTE_YOUR_ANON_PUBLIC_KEY_HERE";
+const SUPABASE_URL = "https://kwbsaazyueymeabousba.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3YnNhYXp5dWV5bWVhYm91c2JhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNTE1NzUsImV4cCI6MjA5ODkyNzU3NX0.MngDbyt9gFexadMK7v8oi_rfMqnZlewa0IIhEyWemdg";
 
 // Shared with js/paywall.js so both files read from one place — edit only here.
 window.CREDIBLE_SUPABASE_URL = SUPABASE_URL;
