@@ -71,4 +71,35 @@
       if (note) note.textContent = "Thanks — backend integration coming soon.";
     });
   });
+
+  /* Share buttons (article pages) ---------------------------------- */
+  const shareBox = document.querySelector(".share");
+  if (shareBox) {
+    const pageUrl = encodeURIComponent(window.location.href.split("#")[0]);
+    const pageTitle = encodeURIComponent(document.title.replace(/ — Credible$/, ""));
+    const targets = {
+      "Share on X": "https://twitter.com/intent/tweet?url=" + pageUrl + "&text=" + pageTitle,
+      "Share on WhatsApp": "https://wa.me/?text=" + pageTitle + "%20" + pageUrl,
+      "Share on LinkedIn": "https://www.linkedin.com/sharing/share-offsite/?url=" + pageUrl
+    };
+    shareBox.querySelectorAll("a[aria-label]").forEach((a) => {
+      const label = a.getAttribute("aria-label");
+      if (targets[label]) {
+        a.href = targets[label];
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+      } else if (label === "Copy link") {
+        a.href = "#";
+        a.addEventListener("click", async (e) => {
+          e.preventDefault();
+          try {
+            await navigator.clipboard.writeText(window.location.href.split("#")[0]);
+            a.style.borderColor = "var(--accent)";
+            a.style.color = "var(--accent)";
+            setTimeout(() => { a.style.borderColor = ""; a.style.color = ""; }, 1500);
+          } catch (_) {}
+        });
+      }
+    });
+  }
 })();

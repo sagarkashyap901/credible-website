@@ -68,7 +68,10 @@
     btn.disabled = true;
 
     try {
-      const orderRes = await fetch("/api/create-order", { method: "POST" });
+      const orderRes = await fetch("/api/create-order", {
+        method: "POST",
+        headers: { Authorization: "Bearer " + session.access_token }
+      });
       const order = await orderRes.json();
       if (!orderRes.ok) throw new Error(order.error || "Could not start checkout");
 
@@ -85,7 +88,10 @@
           btn.textContent = "Verifying…";
           const verifyRes = await fetch("/api/verify-payment", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + session.access_token
+            },
             body: JSON.stringify({
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,

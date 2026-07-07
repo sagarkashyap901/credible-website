@@ -13,6 +13,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "The Widening Rift: Inside the Deepest US-Saudi Crisis in Years",
+    url: "us-saudi-rift-analysis.html",
+    section: "World",
+    excerpt: "A botched military operation, a threatened arms cutoff and a public insult have exposed the limits of America's oldest Gulf partnership.",
+    date: "7 Jul 2026"
+  },
+  {
     title: "The Yen Handshake: How Tokyo and Delhi Are Quietly Rewiring Asian Money",
     url: "japan-india-yen-handshake-summit-2026.html",
     section: "World",

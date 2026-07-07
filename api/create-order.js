@@ -1,22 +1,40 @@
 // api/create-order.js
-// Vercel serverless function. Runs on Vercel's servers, never in the browser —
-// this is the only safe place to use your Razorpay SECRET key.
+// Creates a Razorpay order for ₹119. Hardened:
+// - Requires a valid logged-in Supabase session (Authorization: Bearer <token>)
+// - Secret keys never leave the server.
 //
-// ONE-TIME SETUP: In your Vercel project → Settings → Environment Variables, add:
-//   RAZORPAY_KEY_ID      (from Razorpay Dashboard → Settings → API Keys)
-//   RAZORPAY_KEY_SECRET  (same page — shown once, copy it immediately)
-// Redeploy after adding env vars for them to take effect.
+// Env vars required in Vercel: RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET,
+// SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+
+async function getUserFromToken(req, supabaseUrl, serviceKey) {
+  const auth = req.headers.authorization || "";
+  const token = auth.replace(/^Bearer\s+/i, "");
+  if (!token) return null;
+  try {
+    const r = await fetch(`${supabaseUrl}/auth/v1/user`, {
+      headers: { apikey: serviceKey, Authorization: `Bearer ${token}` },
+    });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch {
+    return null;
+  }
+}
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET } = process.env;
-  if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
-    return res.status(500).json({
-      error: "Razorpay keys not configured. Add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in Vercel project settings.",
-    });
+  const { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env;
+  if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    return res.status(500).json({ error: "Server not fully configured — check Vercel environment variables." });
+  }
+
+  // Only signed-in readers can start a checkout.
+  const user = await getUserFromToken(req, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  if (!user || !user.id) {
+    return res.status(401).json({ error: "Please sign in before subscribing." });
   }
 
   try {
@@ -28,10 +46,10 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        amount: 11900, // ₹119.00 in paise — Razorpay always takes the smallest currency unit
+        amount: 11900, // ₹119.00 in paise
         currency: "INR",
         receipt: `credible_${Date.now()}`,
-        notes: { plan: "monthly_membership" },
+        notes: { plan: "monthly_membership", user_id: user.id },
       }),
     });
 
@@ -44,7 +62,7 @@ export default async function handler(req, res) {
       orderId: order.id,
       amount: order.amount,
       currency: order.currency,
-      keyId: RAZORPAY_KEY_ID, // safe to send to the browser — this is the public key
+      keyId: RAZORPAY_KEY_ID,
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });

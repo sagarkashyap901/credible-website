@@ -1,17 +1,26 @@
 // api/verify-payment.js
-// Confirms the payment is genuine (Razorpay signs every successful payment;
-// only someone holding your SECRET key could forge this), then marks the
-// reader as an active subscriber in Supabase for 30 days.
+// Verifies Razorpay's payment signature, then activates the subscriber. Hardened:
+// - Requires a valid logged-in Supabase session; the session user MUST match userId
+// - Replay protection: one payment can only ever activate one account
 //
-// ONE-TIME SETUP: In Vercel → Settings → Environment Variables, also add:
-//   SUPABASE_URL                (same value as in js/auth.js)
-//   SUPABASE_SERVICE_ROLE_KEY   (Supabase → Settings → API → "service_role" secret —
-//                                 NOT the anon key. This one must stay server-side only.)
-//
-// Also run the SQL in supabase-subscriptions-table.sql once, in your Supabase
-// project's SQL Editor, to create the table this function writes to.
+// Env vars: RAZORPAY_KEY_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
 
 import crypto from "crypto";
+
+async function getUserFromToken(req, supabaseUrl, serviceKey) {
+  const auth = req.headers.authorization || "";
+  const token = auth.replace(/^Bearer\s+/i, "");
+  if (!token) return null;
+  try {
+    const r = await fetch(`${supabaseUrl}/auth/v1/user`, {
+      headers: { apikey: serviceKey, Authorization: `Bearer ${token}` },
+    });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch {
+    return null;
+  }
+}
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -28,8 +37,16 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Server not fully configured — check Vercel environment variables." });
   }
 
-  // Recreate Razorpay's signature ourselves. If it doesn't match byte-for-byte,
-  // the payment payload was tampered with or never happened.
+  // 1. The caller must be signed in, and can only activate THEIR OWN account.
+  const user = await getUserFromToken(req, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  if (!user || !user.id) {
+    return res.status(401).json({ error: "Please sign in." });
+  }
+  if (user.id !== userId) {
+    return res.status(403).json({ error: "Session does not match the account being activated." });
+  }
+
+  // 2. Cryptographic proof the payment is real.
   const expectedSignature = crypto
     .createHmac("sha256", RAZORPAY_KEY_SECRET)
     .update(`${razorpay_order_id}|${razorpay_payment_id}`)
@@ -39,20 +56,31 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Invalid payment signature" });
   }
 
-  const periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+  const sbHeaders = {
+    apikey: SUPABASE_SERVICE_ROLE_KEY,
+    Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+    "Content-Type": "application/json",
+  };
 
   try {
+    // 3. Replay protection: has this payment already activated an account?
+    const dupCheck = await fetch(
+      `${SUPABASE_URL}/rest/v1/subscriptions?razorpay_payment_id=eq.${encodeURIComponent(razorpay_payment_id)}&select=user_id`,
+      { headers: sbHeaders }
+    );
+    const dupRows = await dupCheck.json().catch(() => []);
+    if (Array.isArray(dupRows) && dupRows.length > 0) {
+      return res.status(409).json({ error: "This payment has already been used to activate a subscription." });
+    }
+
+    // 4. Activate for 30 days.
+    const periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
     const upsert = await fetch(`${SUPABASE_URL}/rest/v1/subscriptions?on_conflict=user_id`, {
       method: "POST",
-      headers: {
-        apikey: SUPABASE_SERVICE_ROLE_KEY,
-        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-        "Content-Type": "application/json",
-        Prefer: "resolution=merge-duplicates",
-      },
+      headers: { ...sbHeaders, Prefer: "resolution=merge-duplicates" },
       body: JSON.stringify({
         user_id: userId,
-        email: userEmail || null,
+        email: userEmail || user.email || null,
         status: "active",
         current_period_end: periodEnd,
         razorpay_payment_id,
