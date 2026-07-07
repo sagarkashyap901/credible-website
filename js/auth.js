@@ -49,6 +49,58 @@ window.CREDIBLE_SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
   const signinForm = document.getElementById("signin-form");
   const msg = document.getElementById("auth-msg");
   const title = document.getElementById("auth-title");
+  const guestPanel = document.getElementById("guest-panel");
+  const memberPanel = document.getElementById("member-panel");
+  const activePanel = document.getElementById("active-panel");
+
+  /* ---- Session-aware panels: show the RIGHT view for this reader ---- */
+  async function renderCorrectPanel() {
+    if (!guestPanel || !memberPanel) return; // not on the subscribe page
+
+    const { data: { session } } = await sb.auth.getSession();
+
+    if (!session) {
+      guestPanel.style.display = "block";
+      memberPanel.style.display = "none";
+      if (activePanel) activePanel.style.display = "none";
+      return;
+    }
+
+    // Signed in — check whether their subscription is already active
+    let active = false, until = null;
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/subscriptions?user_id=eq.${session.user.id}&select=status,current_period_end`,
+        { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${session.access_token}` } }
+      );
+      const rows = await res.json().catch(() => []);
+      const sub = Array.isArray(rows) ? rows[0] : null;
+      if (sub && sub.status === "active" && new Date(sub.current_period_end) > new Date()) {
+        active = true;
+        until = new Date(sub.current_period_end);
+      }
+    } catch (_) {}
+
+    guestPanel.style.display = "none";
+
+    const meta = session.user.user_metadata || {};
+    const first = (meta.full_name || session.user.email.split("@")[0]).split(" ")[0];
+
+    if (active && activePanel) {
+      memberPanel.style.display = "none";
+      activePanel.style.display = "block";
+      const untilEl = document.getElementById("active-until");
+      if (untilEl && until) untilEl.textContent = "Your membership runs until " + until.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) + ".";
+    } else {
+      memberPanel.style.display = "block";
+      if (activePanel) activePanel.style.display = "none";
+      const nameEl = document.getElementById("member-name");
+      const emailEl = document.getElementById("member-email");
+      if (nameEl) nameEl.textContent = ", " + first;
+      if (emailEl) emailEl.textContent = session.user.email;
+    }
+  }
+  renderCorrectPanel();
 
   function show(text, type) {
     msg.textContent = text;
@@ -120,6 +172,7 @@ window.CREDIBLE_SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
     }
     const first = (data.user.user_metadata.full_name || "reader").split(" ")[0];
     show("Welcome back, " + first + "! You're signed in.", "ok");
-    setTimeout(() => (window.location.href = "index.html"), 1200);
+    // Immediately show the membership/checkout panel — don't navigate away
+    setTimeout(renderCorrectPanel, 800);
   });
 })();

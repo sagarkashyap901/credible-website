@@ -61,46 +61,60 @@
       </div>
 
       <div class="auth-card reveal">
-        <div class="auth-tabs" role="tablist">
-          <button type="button" class="active" data-mode="signup">Sign up</button>
-          <button type="button" data-mode="signin">Log in</button>
+        <!-- GUEST VIEW: shown only when NOT signed in -->
+        <div id="guest-panel">
+          <div class="auth-tabs" role="tablist">
+            <button type="button" class="active" data-mode="signup">Sign up</button>
+            <button type="button" data-mode="signin">Log in</button>
+          </div>
+
+          <h2 id="auth-title">Create your account</h2>
+          <p class="auth-msg" id="auth-msg" aria-live="polite"></p>
+
+          <form id="signup-form">
+            <div class="field">
+              <label for="su-name">Full name</label>
+              <input type="text" id="su-name" placeholder="Your name" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="su-email">Email</label>
+              <input type="email" id="su-email" placeholder="you@email.com" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="su-password">Password</label>
+              <input type="password" id="su-password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8" required>
+            </div>
+            <button class="btn btn-accent" type="submit">Create account</button>
+            <p class="auth-note">We'll email you a verification link. Your data is stored securely — passwords are encrypted and never visible to anyone, including us.</p>
+          </form>
+
+          <form id="signin-form" style="display:none">
+            <div class="field">
+              <label for="si-email">Email</label>
+              <input type="email" id="si-email" placeholder="you@email.com" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="si-password">Password</label>
+              <input type="password" id="si-password" placeholder="Your password" autocomplete="current-password" required>
+            </div>
+            <button class="btn btn-accent" type="submit">Log in</button>
+          </form>
         </div>
 
-        <h2 id="auth-title">Create your account</h2>
-        <p class="auth-msg" id="auth-msg" aria-live="polite"></p>
+        <!-- MEMBER VIEW: shown when signed in but NOT yet subscribed -->
+        <div id="member-panel" style="display:none">
+          <h2 style="margin:0 0 6px;">You're signed in<span id="member-name"></span> ✓</h2>
+          <p style="font-family:var(--font-display); font-size:14.5px; color:var(--ink-soft); margin:0 0 22px;" id="member-email"></p>
+          <p style="font-family:var(--font-display); font-size:15px; color:var(--ink-soft); margin:0 0 18px;">One step left — activate your membership to unlock every article.</p>
+          <button class="btn btn-accent" data-checkout type="button" style="width:100%; justify-content:center; padding:14px; font-size:15.5px;">Subscribe — ₹119/month</button>
+          <p class="auth-note" style="margin-top:16px;">Secure payment via Razorpay. UPI, cards and netbanking accepted. Cancel anytime.</p>
+        </div>
 
-        <form id="signup-form">
-          <div class="field">
-            <label for="su-name">Full name</label>
-            <input type="text" id="su-name" placeholder="Your name" autocomplete="name" required>
-          </div>
-          <div class="field">
-            <label for="su-email">Email</label>
-            <input type="email" id="su-email" placeholder="you@email.com" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="su-password">Password</label>
-            <input type="password" id="su-password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8" required>
-          </div>
-          <button class="btn btn-accent" type="submit">Create account</button>
-          <p class="auth-note">We'll email you a verification link. Your data is stored securely — passwords are encrypted and never visible to anyone, including us.</p>
-        </form>
-
-        <form id="signin-form" style="display:none">
-          <div class="field">
-            <label for="si-email">Email</label>
-            <input type="email" id="si-email" placeholder="you@email.com" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="si-password">Password</label>
-            <input type="password" id="si-password" placeholder="Your password" autocomplete="current-password" required>
-          </div>
-          <button class="btn btn-accent" type="submit">Log in</button>
-        </form>
-
-        <div class="paywall-gate" style="margin-top:22px; padding-top:22px; border-top:1px solid var(--line)">
-          <p style="font-family:var(--font-display); font-size:13.5px; color:var(--gray); margin:0 0 10px;">Signed in already? Activate your membership below.</p>
-          <button class="btn btn-ghost" data-checkout type="button" style="width:100%; justify-content:center;">Subscribe — ₹119/month</button>
+        <!-- ACTIVE VIEW: shown when signed in AND subscription is active -->
+        <div id="active-panel" style="display:none">
+          <h2 style="margin:0 0 6px;">Membership active 🎉</h2>
+          <p style="font-family:var(--font-display); font-size:14.5px; color:var(--ink-soft); margin:0 0 18px;" id="active-until"></p>
+          <a class="btn btn-accent" href="index.html" style="width:100%; justify-content:center; padding:14px;">Start reading</a>
         </div>
       </div>
     </div>

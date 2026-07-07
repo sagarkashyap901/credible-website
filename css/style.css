@@ -1630,3 +1630,76 @@ body { font-optical-sizing: auto; }
 @media (max-width: 680px) {
   .grid.lead .card h3 { font-size: 27px; }
 }
+
+/* ---------- Photo fix: real images should not be forced into the art aspect ratio ---------- */
+.article-hero img, .figure img {
+  aspect-ratio: unset;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  display: block;
+}
+
+/* ==========================================================================
+   PHOTO SYSTEM — final authority, overrides everything above
+   Two photo slots, two sizes, no stretching ever.
+
+   HERO PHOTO (.article-hero img):
+   - Full content-area width (~980px on desktop)
+   - 16:9 ratio — wide cinematic header image
+   - Bleeds wider than the text column intentionally
+
+   INLINE PHOTO (.inline-photo):
+   - Matches the prose text column exactly (~680px)
+   - 3:2 ratio — natural editorial photo proportion
+   - Sits inside the article body, same width as paragraphs
+   ========================================================================== */
+
+/* Hero photo — wide, full content width */
+.article-hero {
+  max-width: 980px;
+  margin: 0 auto 44px;
+  padding: 0 var(--gutter);
+}
+.article-hero img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+}
+.article-hero figcaption {
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  color: var(--gray);
+  margin-top: 10px;
+  letter-spacing: .01em;
+}
+
+/* Inline photo — prose column width only */
+.inline-photo {
+  max-width: 680px;
+  margin: 36px auto;
+  padding: 0 var(--gutter);
+}
+.inline-photo img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+}
+.inline-photo figcaption {
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  color: var(--gray);
+  margin-top: 10px;
+  letter-spacing: .01em;
+}
+
+@media (max-width: 680px) {
+  .article-hero img { border-radius: 8px; }
+  .inline-photo img { border-radius: 8px; }
+}
