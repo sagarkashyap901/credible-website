@@ -68,20 +68,18 @@
     btn.disabled = true;
 
     try {
-      const orderRes = await fetch("/api/create-order", {
+      const subRes = await fetch("/api/create-subscription", {
         method: "POST",
         headers: { Authorization: "Bearer " + session.access_token }
       });
-      const order = await orderRes.json();
-      if (!orderRes.ok) throw new Error(order.error || "Could not start checkout");
+      const sub = await subRes.json();
+      if (!subRes.ok) throw new Error(sub.error || "Could not start checkout");
 
       const rzp = new window.Razorpay({
-        key: order.keyId,
-        amount: order.amount,
-        currency: order.currency,
-        order_id: order.orderId,
+        key: sub.keyId,
+        subscription_id: sub.subscriptionId,
         name: "Credible",
-        description: "Monthly Membership — ₹119/month",
+        description: "Monthly Membership — ₹119/month, renews automatically",
         prefill: { email: session.user.email },
         theme: { color: "#2430ff" },
         handler: async function (response) {
@@ -93,7 +91,7 @@
               Authorization: "Bearer " + session.access_token
             },
             body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
+              razorpay_subscription_id: response.razorpay_subscription_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               userId: session.user.id,

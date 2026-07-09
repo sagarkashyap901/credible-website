@@ -1,9 +1,7 @@
 // api/verify-payment.js
-// Verifies Razorpay's payment signature, then activates the subscriber. Hardened:
-// - Requires a valid logged-in Supabase session; the session user MUST match userId
-// - Replay protection: one payment can only ever activate one account
-//
-// Env vars: RAZORPAY_KEY_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+// Verifies the FIRST payment of a Razorpay subscription, then activates the reader.
+// Subscription signature = HMAC_SHA256(razorpay_payment_id + "|" + subscription_id)
+// Renewals are handled automatically by api/razorpay-webhook.js.
 
 import crypto from "crypto";
 
@@ -27,29 +25,25 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, userId, userEmail } = req.body || {};
+  const { razorpay_subscription_id, razorpay_payment_id, razorpay_signature, userId, userEmail } = req.body || {};
   const { RAZORPAY_KEY_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env;
 
-  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !userId) {
+  if (!razorpay_subscription_id || !razorpay_payment_id || !razorpay_signature || !userId) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   if (!RAZORPAY_KEY_SECRET || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-    return res.status(500).json({ error: "Server not fully configured — check Vercel environment variables." });
+    return res.status(500).json({ error: "Server not fully configured." });
   }
 
-  // 1. The caller must be signed in, and can only activate THEIR OWN account.
+  // 1. Caller must be signed in and can only activate their own account.
   const user = await getUserFromToken(req, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-  if (!user || !user.id) {
-    return res.status(401).json({ error: "Please sign in." });
-  }
-  if (user.id !== userId) {
-    return res.status(403).json({ error: "Session does not match the account being activated." });
-  }
+  if (!user || !user.id) return res.status(401).json({ error: "Please sign in." });
+  if (user.id !== userId) return res.status(403).json({ error: "Session does not match the account being activated." });
 
-  // 2. Cryptographic proof the payment is real.
+  // 2. Cryptographic proof (subscription flow: payment_id|subscription_id).
   const expectedSignature = crypto
     .createHmac("sha256", RAZORPAY_KEY_SECRET)
-    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+    .update(`${razorpay_payment_id}|${razorpay_subscription_id}`)
     .digest("hex");
 
   if (expectedSignature !== razorpay_signature) {
@@ -63,18 +57,19 @@ export default async function handler(req, res) {
   };
 
   try {
-    // 3. Replay protection: has this payment already activated an account?
+    // 3. Replay protection.
     const dupCheck = await fetch(
       `${SUPABASE_URL}/rest/v1/subscriptions?razorpay_payment_id=eq.${encodeURIComponent(razorpay_payment_id)}&select=user_id`,
       { headers: sbHeaders }
     );
     const dupRows = await dupCheck.json().catch(() => []);
     if (Array.isArray(dupRows) && dupRows.length > 0) {
-      return res.status(409).json({ error: "This payment has already been used to activate a subscription." });
+      return res.status(409).json({ error: "This payment has already been used." });
     }
 
-    // 4. Activate for 30 days.
-    const periodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+    // 4. Activate. Webhook renewals will extend this every month automatically;
+    //    the +32 days here just covers the first cycle with margin.
+    const periodEnd = new Date(Date.now() + 32 * 24 * 60 * 60 * 1000).toISOString();
     const upsert = await fetch(`${SUPABASE_URL}/rest/v1/subscriptions?on_conflict=user_id`, {
       method: "POST",
       headers: { ...sbHeaders, Prefer: "resolution=merge-duplicates" },
@@ -84,7 +79,7 @@ export default async function handler(req, res) {
         status: "active",
         current_period_end: periodEnd,
         razorpay_payment_id,
-        razorpay_order_id,
+        razorpay_subscription_id,
         updated_at: new Date().toISOString(),
       }),
     });

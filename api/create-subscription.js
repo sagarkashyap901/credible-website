@@ -1,10 +1,8 @@
-// api/create-order.js
-// Creates a Razorpay order for ₹119. Hardened:
-// - Requires a valid logged-in Supabase session (Authorization: Bearer <token>)
-// - Secret keys never leave the server.
+// api/create-subscription.js
+// Creates a Razorpay SUBSCRIPTION (₹119/month recurring) for a signed-in reader.
 //
-// Env vars required in Vercel: RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET,
-// SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+// Extra env var needed in Vercel: RAZORPAY_PLAN_ID
+// (create the ₹119/month plan once in Razorpay Dashboard → Subscriptions → Plans)
 
 async function getUserFromToken(req, supabaseUrl, serviceKey) {
   const auth = req.headers.authorization || "";
@@ -26,12 +24,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env;
+  const { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, RAZORPAY_PLAN_ID, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env;
   if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     return res.status(500).json({ error: "Server not fully configured — check Vercel environment variables." });
   }
+  if (!RAZORPAY_PLAN_ID) {
+    return res.status(500).json({ error: "RAZORPAY_PLAN_ID missing — create the ₹119/month plan in Razorpay and add its ID in Vercel." });
+  }
 
-  // Only signed-in readers can start a checkout.
   const user = await getUserFromToken(req, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
   if (!user || !user.id) {
     return res.status(401).json({ error: "Please sign in before subscribing." });
@@ -39,29 +39,28 @@ export default async function handler(req, res) {
 
   try {
     const auth = Buffer.from(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`).toString("base64");
-    const response = await fetch("https://api.razorpay.com/v1/orders", {
+    const response = await fetch("https://api.razorpay.com/v1/subscriptions", {
       method: "POST",
       headers: {
         Authorization: `Basic ${auth}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        amount: 11900, // ₹119.00 in paise
-        currency: "INR",
-        receipt: `credible_${Date.now()}`,
-        notes: { plan: "monthly_membership", user_id: user.id },
+        plan_id: RAZORPAY_PLAN_ID,
+        total_count: 120,          // up to 120 monthly charges (10 years)
+        quantity: 1,
+        customer_notify: 1,
+        notes: { user_id: user.id, email: user.email || "" },
       }),
     });
 
-    const order = await response.json();
+    const sub = await response.json();
     if (!response.ok) {
-      return res.status(response.status).json({ error: order.error?.description || "Razorpay order creation failed" });
+      return res.status(response.status).json({ error: sub.error?.description || "Razorpay subscription creation failed" });
     }
 
     return res.status(200).json({
-      orderId: order.id,
-      amount: order.amount,
-      currency: order.currency,
+      subscriptionId: sub.id,
       keyId: RAZORPAY_KEY_ID,
     });
   } catch (err) {
