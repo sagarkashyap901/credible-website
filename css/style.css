@@ -477,42 +477,44 @@ h1, h2, h3, h4 {
   margin-top: 10px;
 }
 
-.article-social {
+/* Follow bar — Reuters-style round icon buttons, shown AFTER the article body */
+.article-follow {
   display: flex;
   align-items: center;
+  gap: 16px;
   flex-wrap: wrap;
-  gap: 12px;
   max-width: 680px;
   margin: 0 auto 40px;
-  padding: 0 var(--gutter) 26px;
-  border-bottom: 1px solid var(--line);
+  padding: 26px var(--gutter) 0;
+  border-top: 1px solid var(--line);
 }
-.article-social-label {
+.article-follow-label {
   font-family: var(--font-display);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  color: var(--gray);
-  margin-right: 2px;
-}
-.article-social-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: var(--font-display);
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--ink);
-  border: 1.5px solid var(--line);
-  border-radius: 999px;
-  padding: 7px 15px;
-  transition: border-color .15s ease, color .15s ease;
 }
-.article-social-link svg { width: 16px !important; height: 16px !important; flex: none; }
-.article-social-link:hover {
+.article-follow-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.article-follow-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink);
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.article-follow-icons a svg { width: 20px !important; height: 20px !important; flex: none; }
+.article-follow-icons a:hover {
   border-color: var(--accent);
   color: var(--accent);
+  background: var(--accent-dim);
 }
 
 .prose {
