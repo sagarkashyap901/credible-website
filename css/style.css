@@ -272,6 +272,18 @@ h1, h2, h3, h4 {
   background-size: 28px 28px;
   mix-blend-mode: multiply;
 }
+/* Real photo inside a card/row .art figure — fill the box, never stretch */
+.art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 1;
+}
+/* When a photo is present, drop the decorative grid overlay */
+.art:has(img)::after { display: none; }
 .art-1 { background: linear-gradient(135deg, #2430ff 0%, #7b83ff 55%, #dfe2ff 100%); }
 .art-2 { background: linear-gradient(150deg, #16181d 0%, #3c414b 60%, #2430ff 130%); }
 .art-3 { background: linear-gradient(135deg, #dfe2ff 0%, #9aa2ff 50%, #2430ff 100%); }
@@ -497,7 +509,7 @@ h1, h2, h3, h4 {
   padding: 7px 15px;
   transition: border-color .15s ease, color .15s ease;
 }
-.article-social-link svg { width: 16px; height: 16px; flex: none; }
+.article-social-link svg { width: 16px !important; height: 16px !important; flex: none; }
 .article-social-link:hover {
   border-color: var(--accent);
   color: var(--accent);
