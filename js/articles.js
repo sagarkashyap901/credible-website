@@ -8,10 +8,24 @@
       { title: "...", url: "my-new-story.html", section: "India",
         excerpt: "...", date: "Jul 05 2026" },
    4. Optionally add a card for it on index.html / its section page.
-   5. Re-deploy (drag folder to Netlify). Done — it's live and searchable.
+   5. Re-deploy (git add -A && git commit -m "..." && git push). Done — it's live and searchable.
 */
 
 window.CREDIBLE_ARTICLES = [
+  {
+    title: "Iran Weighed Fresh Plot to Kill Trump, Israeli Intelligence Warns, as Tehran Ties Fray",
+    url: "iran-trump-assassination-plot.html",
+    section: "World",
+    excerpt: "A new Israeli intelligence warning about an Iranian plot to assassinate Trump arrives as Washington and Jerusalem clash over how far to push the campaign against Tehran.",
+    date: "11 Jul 2026"
+  },
+  {
+    title: "The Two-Port Trap: How Sabang and Great Nicobar Are Quietly Closing In On China's Biggest Weakness",
+    url: "sabang-port-india-indonesia-strategy.html",
+    section: "India",
+    excerpt: "A port deal, a missile package and an air-force upgrade now sit on either side of the world's most valuable chokepoint — and Beijing has no good answer to any of it.",
+    date: "10 Jul 2026"
+  },
   {
     title: "The Widening Rift: Inside the Deepest US-Saudi Crisis in Years",
     url: "us-saudi-rift-analysis.html",
@@ -25,75 +39,5 @@ window.CREDIBLE_ARTICLES = [
     section: "World",
     excerpt: "Rupee–yen settlement, a chip pact and a minerals bargain — the summit that actually mattered, in three charts.",
     date: "3 Jul 2026"
-  },
-  {
-    title: "Taksing, Explained: What Satellite Images Reveal About the New LAC Flashpoint",
-    url: "japan-india-yen-handshake-summit-2026.html",
-    section: "India",
-    excerpt: "The Arunachal sector few Indians could locate on a map is now central to India–China dynamics.",
-    date: "2 Jul 2026"
-  },
-  {
-    title: "Inside the Tata–ASML Deal That Could Make or Break India's Chip Dream",
-    url: "japan-india-yen-handshake-summit-2026.html",
-    section: "AI & Tech",
-    excerpt: "DUV machines are coming to Dholera. Can India build the ecosystem a fab actually needs?",
-    date: "1 Jul 2026"
-  },
-  {
-    title: "From Importer to Arms Dealer: Inside India's Defense Export Surge",
-    url: "japan-india-yen-handshake-summit-2026.html",
-    section: "India",
-    excerpt: "BrahMos to Vietnam, corvettes to Greece, radar systems to Armenia — the export pipeline, mapped.",
-    date: "1 Jul 2026"
-  },
-  {
-    title: "Six Months After the MOU: Is the US–Iran Ceasefire Actually Holding?",
-    url: "japan-india-yen-handshake-summit-2026.html",
-    section: "World",
-    excerpt: "Hormuz traffic is back to 90% of pre-conflict levels, but the nuclear file remains open.",
-    date: "30 Jun 2026"
-  },
-  {
-    title: "NATO 3.0 Is Real Now — and It's Being Paid For in Euros, Not Dollars",
-    url: "japan-india-yen-handshake-summit-2026.html",
-    section: "World",
-    excerpt: "Europe's rearmament and what it means for India's own defense exports.",
-    date: "29 Jun 2026"
-  },
-  {
-    title: "De-dollarization Is Slower Than the Hype — Except in One Corner of Asia",
-    url: "japan-india-yen-handshake-summit-2026.html",
-    section: "India",
-    excerpt: "Local-currency settlement is inching forward globally. The rupee corridors tell a more interesting story.",
-    date: "28 Jun 2026"
-  },
-  {
-    title: "India's 50,000-GPU Bet: Can Public Compute Compete With Big Tech?",
-    url: "japan-india-yen-handshake-summit-2026.html",
-    section: "AI & Tech",
-    excerpt: "The IndiaAI mission has crossed a milestone. Whether it produces a frontier lab is the question.",
-    date: "27 Jun 2026"
-  },
-  {
-    title: "The Treaty in Suspension: One Year Since India Paused the IWT",
-    url: "japan-india-yen-handshake-summit-2026.html",
-    section: "India",
-    excerpt: "Dam schedules, storage math, and the diplomacy that hasn't happened.",
-    date: "28 Jun 2026"
-  },
-  {
-    title: "Who Controls the Rare Earths Your Phone Depends On?",
-    url: "japan-india-yen-handshake-summit-2026.html",
-    section: "AI & Tech",
-    excerpt: "Mapping mining, refining and magnet production — and why the middle step matters most.",
-    date: "24 Jun 2026"
-  },
-  {
-    title: "Every Defense Deal India Signed in 12 Months, Visualized",
-    url: "japan-india-yen-handshake-summit-2026.html",
-    section: "India",
-    excerpt: "One chart to see the export surge.",
-    date: "1 Jul 2026"
   }
 ];
