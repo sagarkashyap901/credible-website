@@ -13,10 +13,10 @@
 
 window.CREDIBLE_ARTICLES = [
   {
-    title: "1,000 Missiles, a Saturday Deadline, and Two Carriers: Inside the Weekend America and Iran Nearly Went Back to War",
+    title: "Trump: US Will 'Destroy' Iran If I'm Assassinated",
     url: "iran-hormuz-deadline-crisis.html",
     section: "World",
-    excerpt: "A Truth Social post, a Hormuz ultimatum and two carrier strike groups moving into range — the most dangerous 72 hours since Operation Epic Fury.",
+    excerpt: "President says 1,000 missiles are aimed at Tehran as Washington gives Iran until Saturday to renounce attacks on shipping in the strait.",
     date: "12 Jul 2026"
   },
   {
