@@ -13,6 +13,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "1,000 Missiles, a Saturday Deadline, and Two Carriers: Inside the Weekend America and Iran Nearly Went Back to War",
+    url: "iran-hormuz-deadline-crisis.html",
+    section: "World",
+    excerpt: "A Truth Social post, a Hormuz ultimatum and two carrier strike groups moving into range — the most dangerous 72 hours since Operation Epic Fury.",
+    date: "12 Jul 2026"
+  },
+  {
     title: "Iran Weighed Fresh Plot to Kill Trump, Israeli Intelligence Warns, as Tehran Ties Fray",
     url: "iran-trump-assassination-plot.html",
     section: "World",
