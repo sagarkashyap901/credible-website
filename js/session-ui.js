@@ -22,10 +22,12 @@
       var signInBtn = actions.querySelector(".btn-ghost");
       var subscribeBtn = actions.querySelector(".btn-accent");
 
+      // "Sign in" becomes a working link to the reader's account page.
       if (signInBtn) {
         signInBtn.textContent = "Hi, " + firstName;
-        signInBtn.removeAttribute("href");
-        signInBtn.style.cursor = "default";
+        signInBtn.setAttribute("href", "account.html");
+        signInBtn.setAttribute("title", "View your account");
+        signInBtn.style.cursor = "pointer";
       }
       if (subscribeBtn) {
         subscribeBtn.textContent = "Sign out";

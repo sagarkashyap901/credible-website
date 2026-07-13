@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260711b">
+  <link rel="stylesheet" href="css/style.css?v=20260713a">
 </head>
 <body>
 
@@ -105,9 +105,10 @@
         <div id="member-panel" style="display:none">
           <h2 style="margin:0 0 6px;">You're signed in<span id="member-name"></span> ✓</h2>
           <p style="font-family:var(--font-display); font-size:14.5px; color:var(--ink-soft); margin:0 0 22px;" id="member-email"></p>
-          <p style="font-family:var(--font-display); font-size:15px; color:var(--ink-soft); margin:0 0 18px;">One step left — activate your membership to unlock every article.</p>
+          <p style="font-family:var(--font-display); font-size:15px; color:var(--ink-soft); margin:0 0 18px;">Your free account is ready. Upgrade anytime to unlock every deep dive — or head straight to the stories.</p>
           <button class="btn btn-accent" data-checkout type="button" style="width:100%; justify-content:center; padding:14px; font-size:15.5px;">Subscribe — ₹119/month</button>
-          <p class="auth-note" style="margin-top:16px;">Secure payment via Razorpay. UPI, cards and netbanking accepted. Cancel anytime.</p>
+          <a class="btn btn-ghost" href="index.html" style="width:100%; justify-content:center; padding:13px; margin-top:10px;">Maybe later — start reading</a>
+          <p class="auth-note" style="margin-top:16px;">Secure payment via Razorpay. UPI, cards and netbanking accepted. Cancel anytime. You can subscribe whenever you like from <a href="account.html" style="color:var(--accent)">your account</a>.</p>
         </div>
 
         <!-- ACTIVE VIEW: shown when signed in AND subscription is active -->
@@ -115,6 +116,7 @@
           <h2 style="margin:0 0 6px;">Membership active 🎉</h2>
           <p style="font-family:var(--font-display); font-size:14.5px; color:var(--ink-soft); margin:0 0 18px;" id="active-until"></p>
           <a class="btn btn-accent" href="index.html" style="width:100%; justify-content:center; padding:14px;">Start reading</a>
+          <a class="btn btn-ghost" href="account.html" style="width:100%; justify-content:center; padding:13px; margin-top:10px;">View my account</a>
         </div>
       </div>
     </div>
@@ -150,9 +152,16 @@
         <h4>Contact</h4>
         <ul>
           <li><a href="mailto:sagarbusiness90@gmail.com">sagarbusiness90@gmail.com</a></li>
-          <li><a href="https://www.instagram.com/sagar.kashyap901/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-          <li><a href="https://www.youtube.com/@SagarKashyapGlobal" target="_blank" rel="noopener noreferrer">YouTube</a></li>
         </ul>
+        <h4 style="margin-top:22px">Follow Us</h4>
+        <div class="footer-social">
+          <a href="https://www.youtube.com/@SagarKashyapGlobal" target="_blank" rel="noopener noreferrer" aria-label="Credible on YouTube" title="YouTube">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8ZM9.6 15.5V8.5L15.8 12l-6.2 3.5Z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/sagar.kashyap901/" target="_blank" rel="noopener noreferrer" aria-label="Credible on Instagram" title="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:20px;height:20px"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+          </a>
+        </div>
       </div>
     </div>
     <div class="footer-base">

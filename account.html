@@ -3,20 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>World — Credible</title>
-  <meta name="description" content="From Hormuz to the High North — the power shifts shaping this decade, decoded.">
-  <link rel="canonical" href="https://credible-media.netlify.app/world.html">
+  <title>My Account — Credible</title>
+  <meta name="description" content="Manage your Credible account and membership.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://credible-website-virid.vercel.app/account.html">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <meta property="og:site_name" content="Credible">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="World — Credible">
-  <meta property="og:description" content="From Hormuz to the High North — the power shifts shaping this decade, decoded.">
-  <meta property="og:url" content="https://credible-media.netlify.app/world.html">
-  <meta property="og:image" content="https://credible-media.netlify.app/og-card.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="World — Credible">
-  <meta name="twitter:description" content="From Hormuz to the High North — the power shifts shaping this decade, decoded.">
-  <meta name="twitter:image" content="https://credible-media.netlify.app/og-card.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
@@ -32,7 +23,7 @@
       <a class="brand" href="index.html">Credible<span class="dot"></span></a>
       <nav class="nav-links" id="nav-links">
         <a href="india.html">India</a>
-        <a href="world.html" class="active">World</a>
+        <a href="world.html">World</a>
         <a href="tech.html">AI &amp; Tech</a>
         <a href="about.html">About</a>
       </nav>
@@ -49,53 +40,97 @@
   <main>
     <section class="page-head">
       <div class="container">
-        <span class="eyebrow">Section</span>
-        <h1>World</h1>
-        <p>From Hormuz to the High North — the alliances, conflicts and bargains shaping this decade, decoded.</p>
+        <span class="eyebrow">Account</span>
+        <h1>My Account</h1>
+        <p>Your profile, membership status and billing details.</p>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="row-list">
-          <article class="news-row reveal">
-            <div>
-              <h3><a href="china-russia-nuclear-warning.html">The Nuclear Line Beijing Won't Let Moscow Cross</a></h3>
-              <span class="meta">13 Jul 2026</span>
-            </div>
-            <a href="china-russia-nuclear-warning.html" aria-label="The Nuclear Line Beijing Won't Let Moscow Cross"><figure class="art"><img src="images/china-russia-nuclear-card.jpg?v=1" alt="Chinese President Xi Jinping shakes hands with Russian President Vladimir Putin" width="678" height="423" loading="lazy"></figure></a>
-          </article>
-          <article class="news-row reveal">
-            <div>
-              <h3><a href="iran-hormuz-deadline-crisis.html">Trump: US Will 'Destroy' Iran If I'm Assassinated</a></h3>
-              <span class="meta">12 Jul 2026</span>
-            </div>
-            <a href="iran-hormuz-deadline-crisis.html" aria-label="Trump: US Will 'Destroy' Iran If I'm Assassinated"><figure class="art"><img src="images/iran-hormuz-crisis-card.jpg?v=3" alt="Illustration of missile launches around the Pentagon beneath a stylized portrait of Trump" width="900" height="562" loading="lazy"></figure></a>
-          </article>
-          <article class="news-row reveal">
-            <div>
-              <h3><a href="iran-trump-assassination-plot.html">Iran Weighed Fresh Plot to Kill Trump, Israeli Intelligence Warns, as Tehran Ties Fray</a></h3>
-              <span class="meta">11 Jul 2026</span>
-            </div>
-            <a href="iran-trump-assassination-plot.html" aria-label="Iran Weighed Fresh Plot to Kill Trump, Israeli Intelligence Warns"><figure class="art"><img src="images/iran-trump-card.jpg?v=2" alt="President Donald Trump with Secretary of State Marco Rubio" width="900" height="562" loading="lazy"></figure></a>
-          </article>
-          <article class="news-row reveal">
-            <div>
-              <h3><a href="us-saudi-rift-analysis.html">The Widening Rift: Inside the Deepest US-Saudi Crisis in Years</a></h3>
-              <span class="meta">7 Jul 2026</span>
-            </div>
-            <a href="us-saudi-rift-analysis.html" aria-label="US-Saudi rift analysis"><figure class="art"><img src="images/us-saudi-card.jpg?v=2" alt="Saudi Crown Prince Mohammed bin Salman and President Trump at a White House state dinner" width="900" height="562" loading="lazy"></figure></a>
-          </article>
-          <article class="news-row reveal">
-            <div>
-              <h3><a href="japan-india-yen-handshake-summit-2026.html">The Yen Handshake: How Tokyo and Delhi Are Quietly Rewiring Asian Money</a></h3>
-              <span class="meta">3 Jul 2026</span>
-            </div>
-            <a href="japan-india-yen-handshake-summit-2026.html" aria-label="The Yen Handshake: How Tokyo and Delhi Are Quietly Rewiring Asian Money"><figure class="art art-1"></figure></a>
-          </article>
+    <div class="account-wrap" style="margin-top:44px">
+
+      <!-- Loading state -->
+      <div id="account-loading" class="account-loading">Loading your account…</div>
+
+      <!-- Signed-out state -->
+      <div id="account-signedout" class="account-card" style="display:none">
+        <h2>You're not signed in</h2>
+        <p style="font-family:var(--font-display); font-size:14.5px; color:var(--gray); margin:0 0 20px; line-height:1.55;">
+          Sign in to see your profile, membership status and billing details.
+        </p>
+        <div class="account-actions">
+          <a class="btn btn-accent" href="subscribe.html">Sign in</a>
+          <a class="btn btn-ghost" href="index.html">Back to stories</a>
         </div>
       </div>
-    </section>
+
+      <!-- Signed-in content -->
+      <div id="account-content" style="display:none">
+
+        <!-- Upsell shown only to non-members -->
+        <div id="account-upsell" class="account-upsell" style="display:none">
+          <h2>Unlock every story</h2>
+          <p>You have a free account. Upgrade to a Credible membership for unlimited access to every deep dive and member-only briefing — ₹119/month, cancel anytime.</p>
+          <div class="account-actions">
+            <button class="btn btn-accent" data-checkout type="button">Subscribe — ₹119/month</button>
+            <a class="btn btn-ghost" href="index.html">Keep reading free stories</a>
+          </div>
+        </div>
+
+        <div class="account-card">
+          <h2>Profile</h2>
+          <div class="account-row">
+            <span class="account-label">Name</span>
+            <span class="account-value" id="acc-name">—</span>
+          </div>
+          <div class="account-row">
+            <span class="account-label">Email</span>
+            <span class="account-value" id="acc-email">—</span>
+          </div>
+          <div class="account-row">
+            <span class="account-label">Member since</span>
+            <span class="account-value" id="acc-since">—</span>
+          </div>
+          <div class="account-row">
+            <span class="account-label">Email verified</span>
+            <span class="account-value" id="acc-verified">—</span>
+          </div>
+        </div>
+
+        <div class="account-card">
+          <h2>Membership</h2>
+          <div class="account-row">
+            <span class="account-label">Status</span>
+            <span class="account-value" id="acc-status">—</span>
+          </div>
+          <div class="account-row" id="row-renews" style="display:none">
+            <span class="account-label">Renews on</span>
+            <span class="account-value" id="acc-renews">—</span>
+          </div>
+          <div class="account-row" id="row-plan" style="display:none">
+            <span class="account-label">Plan</span>
+            <span class="account-value">₹119 / month</span>
+          </div>
+          <div class="account-row" id="row-payid" style="display:none">
+            <span class="account-label">Last payment ID</span>
+            <span class="account-value" id="acc-payid">—</span>
+          </div>
+        </div>
+
+        <div class="account-card">
+          <h2>Manage</h2>
+          <p style="font-family:var(--font-display); font-size:14px; color:var(--gray); margin:0 0 18px; line-height:1.55;">
+            To cancel your membership or ask about billing, email
+            <a href="mailto:sagarbusiness90@gmail.com" style="color:var(--accent)">sagarbusiness90@gmail.com</a>
+            from your registered address. Cancelling stops future billing; you keep access until the end of your current period. See our <a href="refunds.html" style="color:var(--accent)">Refund Policy</a>.
+          </p>
+          <div class="account-actions">
+            <a class="btn btn-ghost" href="index.html">Back to stories</a>
+            <button class="btn btn-ghost" id="acc-signout" type="button">Sign out</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </main>
 
   <footer class="footer">
@@ -161,7 +196,10 @@
   <script src="js/articles.js"></script>
   <script src="js/search.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/paywall.js"></script>
+  <script src="js/account.js"></script>
   <script src="js/session-ui.js"></script>
   <script src="js/main.js"></script>
 </body>
