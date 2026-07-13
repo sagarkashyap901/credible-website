@@ -84,7 +84,7 @@
     try {
       var res = await fetch(
         SUPABASE_URL + "/rest/v1/subscriptions?user_id=eq." + user.id +
-          "&select=status,current_period_end,razorpay_payment_id",
+          "&select=status,current_period_end,razorpay_payment_id,cancel_at_period_end",
         {
           headers: {
             apikey: SUPABASE_ANON_KEY,
@@ -103,11 +103,18 @@
     }
 
     if (active) {
+      var cancelling = !!sub.cancel_at_period_end;
+
       setHTML(
         "acc-status",
-        '<span class="account-badge active"><span class="dot-i"></span>Member</span>'
+        cancelling
+          ? '<span class="account-badge free"><span class="dot-i"></span>Cancelling</span>'
+          : '<span class="account-badge active"><span class="dot-i"></span>Member</span>'
       );
+
       setText("acc-renews", fmtDate(sub.current_period_end));
+      setText("acc-renews-label", cancelling ? "Access until" : "Renews on");
+
       var rowRenews = document.getElementById("row-renews");
       var rowPlan = document.getElementById("row-plan");
       if (rowRenews) rowRenews.style.display = "flex";
@@ -117,6 +124,19 @@
         setText("acc-payid", sub.razorpay_payment_id);
         var rowPay = document.getElementById("row-payid");
         if (rowPay) rowPay.style.display = "flex";
+      }
+
+      if (cancelling) {
+        // Already scheduled — show the notice, hide the cancel button.
+        setText("cancel-until", fmtDate(sub.current_period_end));
+        var schedEl = document.getElementById("cancel-scheduled");
+        if (schedEl) schedEl.style.display = "block";
+      } else {
+        // Active and not cancelling — offer the cancel button.
+        setText("confirm-until", fmtDate(sub.current_period_end));
+        var cancelWrap = document.getElementById("cancel-wrap");
+        if (cancelWrap) cancelWrap.style.display = "flex";
+        wireCancel(session, sub);
       }
     } else {
       setHTML(
@@ -141,4 +161,66 @@
     loadingEl.style.display = "none";
     contentEl.style.display = "block";
   })();
+
+  /* ---- Cancel membership: confirm → call API → reflect new state ---- */
+  function wireCancel(session, sub) {
+    var openBtn    = document.getElementById("acc-cancel");
+    var confirmBox = document.getElementById("cancel-confirm");
+    var cancelWrap = document.getElementById("cancel-wrap");
+    var yesBtn     = document.getElementById("acc-cancel-confirm");
+    var noBtn      = document.getElementById("acc-cancel-abort");
+    var errEl      = document.getElementById("cancel-error");
+
+    if (!openBtn || !confirmBox || !yesBtn || !noBtn) return;
+
+    openBtn.addEventListener("click", function () {
+      cancelWrap.style.display = "none";
+      confirmBox.style.display = "block";
+    });
+
+    noBtn.addEventListener("click", function () {
+      confirmBox.style.display = "none";
+      cancelWrap.style.display = "flex";
+      if (errEl) errEl.style.display = "none";
+    });
+
+    yesBtn.addEventListener("click", async function () {
+      yesBtn.disabled = true;
+      noBtn.disabled = true;
+      yesBtn.textContent = "Cancelling…";
+      if (errEl) errEl.style.display = "none";
+
+      try {
+        var r = await fetch("/api/cancel-subscription", {
+          method: "POST",
+          headers: { Authorization: "Bearer " + session.access_token }
+        });
+        var result = await r.json().catch(function () { return {}; });
+
+        if (!r.ok || !result.success) {
+          throw new Error(result.error || "Could not cancel right now.");
+        }
+
+        // Success — swap to the "cancellation scheduled" view.
+        confirmBox.style.display = "none";
+        setText("cancel-until", fmtDate(result.accessUntil || sub.current_period_end));
+        setText("acc-renews-label", "Access until");
+        setHTML(
+          "acc-status",
+          '<span class="account-badge free"><span class="dot-i"></span>Cancelling</span>'
+        );
+        var schedEl = document.getElementById("cancel-scheduled");
+        if (schedEl) schedEl.style.display = "block";
+      } catch (err) {
+        yesBtn.disabled = false;
+        noBtn.disabled = false;
+        yesBtn.textContent = "Yes, cancel membership";
+        if (errEl) {
+          errEl.textContent =
+            err.message + " Please email sagarbusiness90@gmail.com and we'll sort it out.";
+          errEl.style.display = "block";
+        }
+      }
+    });
+  }
 })();

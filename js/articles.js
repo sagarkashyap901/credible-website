@@ -13,6 +13,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "Trump Declares U.S. 'Guardian' of Hormuz, Reimposes Iran Blockade, Demands Payment for Securing the Strait",
+    url: "trump-hormuz-guardian-fee.html",
+    section: "World",
+    excerpt: "Washington will charge 20% of cargo value to secure the Strait of Hormuz and is reinstating its Iran blockade — a proposal with no legal precedent.",
+    date: "14 Jul 2026"
+  },
+  {
     title: "The Nuclear Line Beijing Won't Let Moscow Cross",
     url: "china-russia-nuclear-warning.html",
     section: "World",
