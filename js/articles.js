@@ -13,6 +13,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "The Nuclear Line Beijing Won't Let Moscow Cross",
+    url: "china-russia-nuclear-warning.html",
+    section: "World",
+    excerpt: "A private rebuke relayed through three governments, an \"ultimatum\" Zelenskyy says China delivered to Moscow, and a Pentagon that sees rhetoric, not readiness.",
+    date: "13 Jul 2026"
+  },
+  {
     title: "Trump: US Will 'Destroy' Iran If I'm Assassinated",
     url: "iran-hormuz-deadline-crisis.html",
     section: "World",
