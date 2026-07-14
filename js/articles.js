@@ -13,6 +13,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "New War Erupts in the Middle East: Saudi Arabia and Houthis Attack Each Other",
+    url: "saudi-yemen-truce-collapse.html",
+    section: "World",
+    excerpt: "A dispute over one Iranian aircraft has unraveled Yemen's longest period of calm since 2015, pulling Pakistan's new defense pact with Riyadh into an active theater.",
+    date: "15 Jul 2026"
+  },
+  {
     title: "Trump Declares U.S. 'Guardian' of Hormuz, Reimposes Iran Blockade, Demands Payment for Securing the Strait",
     url: "trump-hormuz-guardian-fee.html",
     section: "World",
