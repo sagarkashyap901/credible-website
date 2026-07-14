@@ -2,7 +2,7 @@
    CREDIBLE — style.css
    Geopolitics, Indian politics, global affairs & technology for Gen Z.
    Design system: white paper, ink text, electric ultramarine accent.
-   Type: Archivo (display/UI) · Newsreader (article prose) · Space Mono (data)
+   Type: Inter (display/UI) · Libre Baskerville (article prose)
    ========================================================================== */
 
 /* ---------- 1. Tokens ---------- */
@@ -18,7 +18,7 @@
   --accent-dim: #eceeff;
 
   --font-display: "Inter", system-ui, sans-serif;
-  --font-body:    "Newsreader", Georgia, serif;
+  --font-body:    "Libre Baskerville", Georgia, "Times New Roman", serif;
   --font-mono:    "Inter", system-ui, sans-serif;   /* two-font system: labels use Inter */
 
   --max: 1200px;
@@ -1860,4 +1860,220 @@ body { font-optical-sizing: auto; }
   color: var(--gray);
   padding: 40px 0;
   text-align: center;
+}
+
+/* ==========================================================================
+   V6 — LIBRE BASKERVILLE body type (final authority — overrides all above)
+   --------------------------------------------------------------------------
+   Libre Baskerville has a notably larger x-height and wider set-width than
+   Newsreader, so the SAME px value renders visually much bigger. Dropping
+   from 21px → 18px keeps the optical size identical while gaining the
+   sharper, higher-contrast serif that reads as "premium print".
+   Generous leading (1.78) is required: Baskerville's tall x-height needs
+   the extra air or the block turns into a grey wall.
+   ========================================================================== */
+.prose {
+  font-family: var(--font-body);
+  font-size: clamp(16.5px, 1.35vw, 18px);
+  line-height: 1.78;
+  letter-spacing: 0.006em;   /* a hair of tracking — opens up the serif */
+  color: var(--ink-body);
+  max-width: 660px;          /* Baskerville is wide; tighten to hold ~65ch */
+  font-weight: 400;
+}
+.prose p {
+  margin: 0 0 1.35em;
+}
+/* Optical fix: Baskerville's italic is delicate — nudge it up slightly */
+.prose em, .prose i { letter-spacing: 0.01em; }
+
+/* Bold inside body copy: Libre Baskerville only ships 400/700 */
+.prose strong, .prose b { font-weight: 700; letter-spacing: 0.002em; }
+
+/* Standfirst stays Inter (sans) — do not inherit the serif */
+.standfirst { letter-spacing: 0; }
+
+/* Drop cap-free first paragraph, but give it a touch more presence */
+.prose > p:first-of-type {
+  font-size: 1.055em;
+  line-height: 1.7;
+}
+
+/* Blockquote — Baskerville italic sings here */
+.prose blockquote {
+  font-family: var(--font-body);
+  letter-spacing: 0.004em;
+  line-height: 1.55;
+}
+
+/* Lists need matching rhythm */
+.prose ul, .prose ol { line-height: 1.7; }
+.prose li { margin-bottom: 0.55em; }
+
+/* Inline photo caption stays sans — keep it crisp */
+.inline-photo figcaption { font-family: var(--font-mono); letter-spacing: 0; }
+
+/* Footer now has 5 columns: Brand · Sections · Company · Contact · Follow Us */
+.footer-inner { grid-template-columns: 1.8fr 1fr 1fr 1.2fr 0.9fr; }
+@media (max-width: 1000px) {
+  .footer-inner { grid-template-columns: 1fr 1fr 1fr; }
+}
+@media (max-width: 720px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .footer-inner { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* ==========================================================================
+   21. Subscribe prompt — timed, dismissible, non-members only
+   ========================================================================== */
+.sub-prompt {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease;
+}
+.sub-prompt.open { opacity: 1; pointer-events: auto; }
+
+.sub-prompt-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(19, 19, 19, .55);
+  backdrop-filter: blur(3px);
+}
+
+.sub-prompt-box {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 470px;
+  background: #131313;
+  color: #fff;
+  border-radius: 16px;
+  padding: 34px 32px 28px;
+  box-shadow: 0 30px 70px rgba(0,0,0,.42);
+  transform: translateY(14px) scale(.985);
+  transition: transform .24s cubic-bezier(.2,.8,.2,1);
+  overflow: hidden;
+}
+.sub-prompt.open .sub-prompt-box { transform: translateY(0) scale(1); }
+
+/* Accent glow, same language as the paywall box */
+.sub-prompt-box::before {
+  content: "";
+  position: absolute;
+  top: -70px; right: -50px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(36,48,255,.42) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.sub-prompt-x {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 32px; height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #8d93a0;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+  z-index: 2;
+}
+.sub-prompt-x:hover { background: rgba(255,255,255,.09); color: #fff; }
+
+.sub-prompt-eyebrow {
+  position: relative; z-index: 1;
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #9aa2ff;
+  margin-bottom: 10px;
+}
+.sub-prompt-box h2 {
+  position: relative; z-index: 1;
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-weight: 760;
+  letter-spacing: -.02em;
+  margin: 0 0 10px;
+  color: #fff;
+}
+.sub-prompt-box p {
+  position: relative; z-index: 1;
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #c7cbd4;
+  margin: 0 0 18px;
+}
+.sub-prompt-price {
+  position: relative; z-index: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 0 0 20px;
+}
+.sub-prompt-price .amt {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: #fff;
+}
+.sub-prompt-price .per {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: #8d93a0;
+}
+.sub-prompt-actions {
+  position: relative; z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.sub-prompt-actions .btn { width: 100%; justify-content: center; padding: 13px; }
+.sub-prompt-actions .btn-ghost {
+  color: #b9bdc7;
+  border-color: rgba(255,255,255,.2);
+  background: transparent;
+}
+.sub-prompt-actions .btn-ghost:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,.45);
+  background: rgba(255,255,255,.06);
+}
+.sub-prompt-fine {
+  position: relative; z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: #8d93a0;
+  margin: 15px 0 0 !important;
+  text-align: center;
+}
+.sub-prompt-fine a { color: #9aa2ff; }
+
+@media (max-width: 520px) {
+  .sub-prompt { align-items: flex-end; padding: 0; }
+  .sub-prompt-box {
+    max-width: 100%;
+    border-radius: 18px 18px 0 0;
+    padding: 30px 22px 24px;
+    transform: translateY(100%);
+  }
+  .sub-prompt.open .sub-prompt-box { transform: translateY(0); }
+  .sub-prompt-box h2 { font-size: 22px; }
 }
