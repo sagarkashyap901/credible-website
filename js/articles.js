@@ -13,6 +13,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "India, China Face 100% Tariffs While Europe's Russian Gas Imports Hit a Record",
+    url: "graham-tariff-hypocrisy.html",
+    section: "World",
+    excerpt: "The bill written in Lindsey Graham's memory targets Russia's two largest crude buyers — while the EU imports Russian gas at an all-time high, exempted by the same text.",
+    date: "16 Jul 2026"
+  },
+  {
     title: "New War Erupts in the Middle East: Saudi Arabia and Houthis Attack Each Other",
     url: "saudi-yemen-truce-collapse.html",
     section: "World",
