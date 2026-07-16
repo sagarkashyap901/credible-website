@@ -13,6 +13,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "Trump Weighs Widest Escalation Yet in Iran War, as Tehran Threatens a Second Front at Bab al-Mandeb",
+    url: "trump-iran-escalation.html",
+    section: "World",
+    excerpt: "Options briefed to the president include seizing an Iranian oil island and bombing a nuclear site deeper than Fordow, as Iran signals it could shut a second global chokepoint.",
+    date: "17 Jul 2026"
+  },
+  {
     title: "India, China Face 100% Tariffs While Europe's Russian Gas Imports Hit a Record",
     url: "graham-tariff-hypocrisy.html",
     section: "World",

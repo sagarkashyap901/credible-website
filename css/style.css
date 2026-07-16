@@ -32,6 +32,13 @@
 /* ---------- 2. Reset & base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 
+/* Browsers apply a default `margin: 1em 40px` to <figure>. Left unreset,
+   every .art/.inline-photo/.article-hero image sits inset ~40px on each
+   side while sibling text (headlines, excerpts) runs full width — the
+   image looks narrow and off-center relative to everything around it,
+   most visibly on mobile where 80px is a huge share of the viewport. */
+figure { margin: 0; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -2076,4 +2083,59 @@ body { font-optical-sizing: auto; }
   }
   .sub-prompt.open .sub-prompt-box { transform: translateY(0); }
   .sub-prompt-box h2 { font-size: 22px; }
+}
+
+/* ==========================================================================
+   22. Mobile fixes — account icon, headline wrap, footer order
+   ========================================================================== */
+
+/* Profile icon: hidden everywhere by default. session-ui.js adds .show
+   when the reader is signed in; it only actually renders on narrow
+   screens (below) — desktop keeps using the "Hi, Name" text button. */
+.account-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink);
+  flex: none;
+  transition: border-color .15s ease, color .15s ease;
+}
+.account-btn svg { width: 19px; height: 19px; flex: none; }
+.account-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+@media (max-width: 860px) {
+  /* Show the compact profile icon once signed in... */
+  .account-btn.show { display: inline-flex; }
+  /* ...and retire the old text pills on mobile — "Hi, Name" and "Sign out"
+     both duplicate what the profile icon + account page now do, and there
+     isn't room for three controls next to the hamburger and search icon. */
+  body.is-authed .topbar .btn-ghost,
+  body.is-authed .topbar .btn-accent { display: none; }
+}
+
+/* Headlines: `text-wrap: balance` evens out line LENGTHS, which is great
+   typography on wide desktop cards but on a narrow mobile column it often
+   settles on breaks well short of the full line width — reading as wasted
+   whitespace down the right edge. Below 640px we let lines wrap normally
+   (fill each line before breaking) instead of balancing them. */
+@media (max-width: 640px) {
+  .card h3, .news-row h3, .page-head h1, .section-head h2,
+  .grid.lead .card h3 {
+    text-wrap: wrap;
+  }
+}
+
+/* Footer order on mobile: Follow Us right after the brand block, ahead of
+   Sections/Company/Contact — matches what people actually look for first
+   on a phone (social links), rather than making them scroll past 3 lists. */
+@media (max-width: 1000px) {
+  .footer-inner > div:nth-child(1) { order: 1; }  /* Brand */
+  .footer-inner > div:nth-child(5) { order: 2; }  /* Follow Us */
+  .footer-inner > div:nth-child(2) { order: 3; }  /* Sections */
+  .footer-inner > div:nth-child(3) { order: 4; }  /* Company */
+  .footer-inner > div:nth-child(4) { order: 5; }  /* Contact */
 }

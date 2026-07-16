@@ -18,9 +18,12 @@
   window.CREDIBLE_SB = sb;
 
   function renderSignedIn(firstName) {
+    document.body.classList.add("is-authed");
+
     document.querySelectorAll(".topbar-actions, .masthead-actions").forEach(function (actions) {
       var signInBtn = actions.querySelector(".btn-ghost");
       var subscribeBtn = actions.querySelector(".btn-accent");
+      var acctBtn = actions.querySelector(".account-btn");
 
       // "Sign in" becomes a working link to the reader's account page.
       if (signInBtn) {
@@ -29,6 +32,14 @@
         signInBtn.setAttribute("title", "View your account");
         signInBtn.style.cursor = "pointer";
       }
+
+      // Compact profile icon — the mobile equivalent of "Hi, Name" above.
+      // CSS only actually displays this below 860px; harmless if shown
+      // elsewhere since it's just a second link to the same page.
+      if (acctBtn) {
+        acctBtn.classList.add("show");
+      }
+
       if (subscribeBtn) {
         subscribeBtn.textContent = "Sign out";
         subscribeBtn.setAttribute("href", "#");
