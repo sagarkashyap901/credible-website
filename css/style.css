@@ -2139,3 +2139,59 @@ body { font-optical-sizing: auto; }
   .footer-inner > div:nth-child(3) { order: 4; }  /* Company */
   .footer-inner > div:nth-child(4) { order: 5; }  /* Contact */
 }
+
+/* ==========================================================================
+   23. Article data tables + blockquote attribution
+   ========================================================================== */
+.prose .table-wrap {
+  margin: 1.8em 0;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  min-width: 480px;
+}
+.prose caption {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  padding: 12px 14px 10px;
+}
+.prose thead th {
+  text-align: left;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--wash);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.prose tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-body);
+  vertical-align: top;
+}
+.prose tbody tr:last-child td { border-bottom: none; }
+.prose tbody td:first-child { font-weight: 700; color: var(--ink); }
+
+.prose blockquote cite {
+  display: block;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-top: 10px;
+}

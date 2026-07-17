@@ -13,6 +13,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "The Hormuz Escape: How Saudi Arabia and the UAE Are Rebuilding Gulf Oil Geography Around a Blocked Strait",
+    url: "hormuz-escape-gulf-bypass.html",
+    section: "World",
+    excerpt: "One nation has already hit a wall, the other is spending billions to make sure it never does — inside the opposing strategies to route around a blocked strait.",
+    date: "18 Jul 2026"
+  },
+  {
     title: "Trump Weighs Widest Escalation Yet in Iran War, as Tehran Threatens a Second Front at Bab al-Mandeb",
     url: "trump-iran-escalation.html",
     section: "World",
