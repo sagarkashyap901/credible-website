@@ -144,8 +144,10 @@ h1, h2, h3, h4 {
   background: var(--ink);
   color: #fff;
   overflow: hidden;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .03em;
   line-height: 1;
 }
 
@@ -158,8 +160,8 @@ h1, h2, h3, h4 {
   animation: ticker 46s linear infinite;
 }
 
-.ticker span { display: inline-flex; align-items: center; gap: 10px; }
-.ticker b { color: var(--accent-dim); font-weight: 700; }
+.ticker span { display: inline-flex; align-items: center; gap: 10px; font-size: inherit; font-family: inherit; }
+.ticker b { color: var(--accent-dim); font-weight: 700; font-size: inherit; font-family: inherit; }
 .ticker i {
   font-style: normal;
   color: var(--accent);
@@ -1343,7 +1345,6 @@ body { background: var(--paper); color: var(--ink-body); font-family: var(--font
   color: var(--gray);
   letter-spacing: 0;
 }
-.ticker { font-family: var(--font-display); font-size: 12.5px; font-weight: 600; letter-spacing: .03em; }
 .ticker i { font-family: var(--font-display); }
 .art .tag, .figure .chart-sub, .figure .chart-note, .article-hero figcaption,
 .bar-label, .bar-value, .search-results .r-section, .related-list .r-section,
@@ -1881,7 +1882,16 @@ body { font-optical-sizing: auto; }
    ========================================================================== */
 .prose {
   font-family: var(--font-body);
-  font-size: clamp(16.5px, 1.35vw, 18px);
+  font-size: 18px;           /* FIXED, not fluid — mobile and desktop must render
+                                 identically. This was previously clamp(16.5px,
+                                 1.35vw, 18px), which deliberately shrank on
+                                 narrow screens; several older, unrelated .prose
+                                 rules earlier in this file (from past redesign
+                                 passes) also set conflicting sizes, and because
+                                 this is the LAST .prose rule in the file, this
+                                 is always the one that wins — so it's the only
+                                 place that needs to be correct. Do not reintroduce
+                                 vw/clamp here. */
   line-height: 1.78;
   letter-spacing: 0.006em;   /* a hair of tracking — opens up the serif */
   color: var(--ink-body);
@@ -1906,9 +1916,12 @@ body { font-optical-sizing: auto; }
   line-height: 1.7;
 }
 
-/* Blockquote — Baskerville italic sings here */
+/* Blockquote — Baskerville italic sings here. Fixed size (not fluid) for the
+   same reason as .prose above: several older rules earlier in the file set
+   21px/22px/24px for this same selector; being last, this one always wins. */
 .prose blockquote {
   font-family: var(--font-body);
+  font-size: 22px;
   letter-spacing: 0.004em;
   line-height: 1.55;
 }

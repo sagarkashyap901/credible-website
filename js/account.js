@@ -3,9 +3,10 @@
    their real profile + membership details. Runs only on the account page.
 
    Shows:
-   · Name, email, member-since date, email-verified status
+   · Name, member-since date, email-verified status
    · Membership status (Member / Free account), renewal date, last payment ID
-   · Subscribe button for free accounts; sign-out for everyone
+   · Subscribe button for free accounts; sign-out for everyone; cancel
+     membership lives at the bottom of the page, separate from the stats
 */
 
 (function () {
@@ -70,7 +71,6 @@
 
     /* ---- Profile ---- */
     setText("acc-name", meta.full_name || "—");
-    setText("acc-email", user.email || "—");
     setText("acc-since", fmtDate(user.created_at));
     setHTML(
       "acc-verified",
@@ -132,10 +132,14 @@
         var schedEl = document.getElementById("cancel-scheduled");
         if (schedEl) schedEl.style.display = "block";
       } else {
-        // Active and not cancelling — offer the cancel button.
+        // Active and not cancelling — offer the cancel button, tucked away
+        // at the very bottom of the page (see account.html) rather than
+        // sitting next to the membership stats where it'd be seen every visit.
         setText("confirm-until", fmtDate(sub.current_period_end));
         var cancelWrap = document.getElementById("cancel-wrap");
         if (cancelWrap) cancelWrap.style.display = "flex";
+        var cancelSection = document.getElementById("cancel-section");
+        if (cancelSection) cancelSection.style.display = "block";
         wireCancel(session, sub);
       }
     } else {

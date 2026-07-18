@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260718a">
+  <link rel="stylesheet" href="css/style.css?v=20260718b">
 </head>
 <body>
 
@@ -86,16 +86,16 @@
             <span class="account-value" id="acc-name">—</span>
           </div>
           <div class="account-row">
-            <span class="account-label">Email</span>
-            <span class="account-value" id="acc-email">—</span>
-          </div>
-          <div class="account-row">
             <span class="account-label">Member since</span>
             <span class="account-value" id="acc-since">—</span>
           </div>
           <div class="account-row">
             <span class="account-label">Email verified</span>
             <span class="account-value" id="acc-verified">—</span>
+          </div>
+          <div class="account-actions" style="margin-top:20px;">
+            <a class="btn btn-ghost" href="index.html">Back to stories</a>
+            <button class="btn btn-ghost" id="acc-signout" type="button">Sign out</button>
           </div>
         </div>
 
@@ -124,39 +124,37 @@
               <strong>Cancellation scheduled.</strong> You won't be charged again. You keep full access until <span id="cancel-until">the end of your current period</span>.
             </p>
           </div>
-
-          <!-- Cancel button (members only) -->
-          <div class="account-actions" id="cancel-wrap" style="display:none; margin-top:20px;">
-            <button class="btn btn-ghost" id="acc-cancel" type="button">Cancel membership</button>
-          </div>
-
-          <!-- Confirmation step -->
-          <div id="cancel-confirm" style="display:none; margin-top:18px; padding:18px; border:1px solid var(--line); border-radius:10px; background:#faf9f6;">
-            <p style="font-family:var(--font-display); font-size:14.5px; color:var(--ink); margin:0 0 6px; font-weight:600;">Cancel your membership?</p>
-            <p style="font-family:var(--font-display); font-size:14px; color:var(--gray); margin:0 0 16px; line-height:1.55;">
-              You'll keep full access until <span id="confirm-until">the end of your current billing period</span>, and you won't be charged again. As set out in our <a href="refunds.html" style="color:var(--accent)">Refund Policy</a>, the current period is non-refundable. You can resubscribe anytime.
-            </p>
-            <div class="account-actions">
-              <button class="btn btn-accent" id="acc-cancel-confirm" type="button">Yes, cancel membership</button>
-              <button class="btn btn-ghost" id="acc-cancel-abort" type="button">Keep my membership</button>
-            </div>
-            <p id="cancel-error" style="font-family:var(--font-display); font-size:13.5px; color:#b3261e; margin:14px 0 0; display:none;"></p>
-          </div>
         </div>
 
-        <div class="account-card">
-          <h2>Manage</h2>
-          <p style="font-family:var(--font-display); font-size:14px; color:var(--gray); margin:0 0 18px; line-height:1.55;">
-            For any billing question, email
-            <a href="mailto:sagarbusiness90@gmail.com" style="color:var(--accent)">sagarbusiness90@gmail.com</a>
-            from your registered address.
+      </div>
+    </div>
+
+    <!-- Cancel membership deliberately sits at the very bottom of the page,
+         on its own — not something you see every time you glance at your
+         membership card, only if you scroll all the way down looking for it. -->
+    <div class="account-wrap" id="cancel-section-wrap" style="margin-top:0; padding-top:0;">
+      <div class="account-card" id="cancel-section" style="display:none; border-color:var(--line); background:#fbfaf7;">
+        <h2 style="font-size:14.5px; color:var(--gray); text-transform:uppercase; letter-spacing:.04em;">Cancel membership</h2>
+        <p style="font-family:var(--font-display); font-size:13.5px; color:var(--gray); margin:0 0 16px; line-height:1.55;">
+          For billing questions, email <a href="mailto:sagarbusiness90@gmail.com" style="color:var(--accent)">sagarbusiness90@gmail.com</a> from your registered address.
+        </p>
+
+        <div class="account-actions" id="cancel-wrap">
+          <button class="btn btn-ghost" id="acc-cancel" type="button">Cancel membership</button>
+        </div>
+
+        <!-- Confirmation step -->
+        <div id="cancel-confirm" style="display:none; margin-top:18px; padding:18px; border:1px solid var(--line); border-radius:10px; background:#faf9f6;">
+          <p style="font-family:var(--font-display); font-size:14.5px; color:var(--ink); margin:0 0 6px; font-weight:600;">Cancel your membership?</p>
+          <p style="font-family:var(--font-display); font-size:14px; color:var(--gray); margin:0 0 16px; line-height:1.55;">
+            You'll keep full access until <span id="confirm-until">the end of your current billing period</span>, and you won't be charged again. As set out in our <a href="refunds.html" style="color:var(--accent)">Refund Policy</a>, the current period is non-refundable. You can resubscribe anytime.
           </p>
           <div class="account-actions">
-            <a class="btn btn-ghost" href="index.html">Back to stories</a>
-            <button class="btn btn-ghost" id="acc-signout" type="button">Sign out</button>
+            <button class="btn btn-accent" id="acc-cancel-confirm" type="button">Yes, cancel membership</button>
+            <button class="btn btn-ghost" id="acc-cancel-abort" type="button">Keep my membership</button>
           </div>
+          <p id="cancel-error" style="font-family:var(--font-display); font-size:13.5px; color:#b3261e; margin:14px 0 0; display:none;"></p>
         </div>
-
       </div>
     </div>
   </main>
