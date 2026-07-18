@@ -145,31 +145,31 @@ h1, h2, h3, h4 {
   color: #fff;
   overflow: hidden;
   font-family: var(--font-display);
-  font-size: 12.5px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: .03em;
+  letter-spacing: .025em;
   line-height: 1;
 }
 
 .ticker-track {
   display: flex;
-  gap: 48px;
+  gap: 40px;
   white-space: nowrap;
-  padding: 9px 0;
+  padding: 7px 0;
   width: max-content;
   animation: ticker 46s linear infinite;
 }
 
-.ticker span { display: inline-flex; align-items: center; gap: 10px; font-size: inherit; font-family: inherit; }
+.ticker span { display: inline-flex; align-items: center; gap: 9px; font-size: inherit; font-family: inherit; }
 .ticker b { color: var(--accent-dim); font-weight: 700; font-size: inherit; font-family: inherit; }
 .ticker i {
   font-style: normal;
   color: var(--accent);
   background: #fff;
   border-radius: 3px;
-  padding: 2px 6px;
+  padding: 1.5px 5px;
   font-weight: 700;
-  font-size: 10.5px;
+  font-size: 9px;
   letter-spacing: .08em;
 }
 
@@ -1928,6 +1928,20 @@ body { font-optical-sizing: auto; }
 
 /* Lists need matching rhythm */
 .prose ul, .prose ol { line-height: 1.7; }
+
+/* ---------- Mobile: the ONE deliberate size reduction ----------
+   Libre Baskerville's large x-height means 18px — perfectly sized on a wide
+   desktop column — reads as noticeably large on a narrow phone screen, where
+   each line only holds a handful of words. This is intentionally a plain,
+   single rule (not fluid, not layered on other rules) so it stays the only
+   thing governing mobile article size. If article text ever needs resizing
+   again, THIS is the one place to change — do not add another .prose rule
+   anywhere else in this file. */
+@media (max-width: 640px) {
+  .prose { font-size: 16px; line-height: 1.72; }
+  .prose > p:first-of-type { font-size: 1.04em; line-height: 1.65; }
+  .prose blockquote { font-size: 19px; }
+}
 .prose li { margin-bottom: 0.55em; }
 
 /* Inline photo caption stays sans — keep it crisp */

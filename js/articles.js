@@ -13,6 +13,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "How China Quietly Saved the World Economy",
+    url: "china-quietly-saved-world-economy.html",
+    section: "World",
+    excerpt: "Analysts predicted $200 oil and a global blackout when Iran shut Hormuz. Neither happened. The reason wasn't luck — it was Beijing, and it wasn't kindness.",
+    date: "19 Jul 2026"
+  },
+  {
     title: "The Hormuz Escape: How Saudi Arabia and the UAE Are Rebuilding Gulf Oil Geography Around a Blocked Strait",
     url: "hormuz-escape-gulf-bypass.html",
     section: "World",
