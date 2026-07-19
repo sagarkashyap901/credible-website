@@ -2222,3 +2222,175 @@ body { font-optical-sizing: auto; }
   color: var(--gray);
   margin-top: 10px;
 }
+
+/* ==========================================================================
+   21. MOTION SYSTEM — premium choreography (19 Jul 2026)
+   Orchestrated page-load sequence, word-by-word headline reveals, cinematic
+   hero settles, drop caps, and micro-interactions. Every initial hidden state
+   is gated behind `html.motion` — a class added by a one-line inline script
+   in each page's <head>, and ONLY when the visitor has not requested reduced
+   motion. No JS, or reduced motion = everything renders instantly, fully
+   visible. All keyframes namespaced `cm` (Credible Motion) to avoid clashes.
+   ========================================================================== */
+
+/* Brand-tinted text selection — small, everywhere, unmistakably Credible */
+::selection { background: var(--accent); color: #fff; }
+::-moz-selection { background: var(--accent); color: #fff; }
+
+@keyframes cmRise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes cmFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes cmFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes cmWordUp {
+  from { transform: translateY(112%); }
+  to   { transform: none; }
+}
+@keyframes cmTrackIn {
+  from { opacity: 0; letter-spacing: .3em; }
+  to   { opacity: 1; letter-spacing: .12em; }
+}
+@keyframes cmSettle {
+  from { transform: scale(1.055); }
+  to   { transform: none; }
+}
+
+/* ----- Masthead entrance: brand → nav → actions → ticker ----- */
+html.motion .topbar .brand      { animation: cmRise .55s cubic-bezier(.19,1,.22,1) .05s both; }
+html.motion .topbar .nav-links a:nth-child(1) { animation: cmRise .5s cubic-bezier(.19,1,.22,1) .14s both; }
+html.motion .topbar .nav-links a:nth-child(2) { animation: cmRise .5s cubic-bezier(.19,1,.22,1) .20s both; }
+html.motion .topbar .nav-links a:nth-child(3) { animation: cmRise .5s cubic-bezier(.19,1,.22,1) .26s both; }
+html.motion .topbar .nav-links a:nth-child(4) { animation: cmRise .5s cubic-bezier(.19,1,.22,1) .32s both; }
+html.motion .topbar-actions     { animation: cmFade .6s ease .3s both; }
+html.motion .ticker             { animation: cmFade .7s ease .4s both; }
+
+/* Mobile: nav links live inside the dropdown panel — no entrance there */
+@media (max-width: 860px) {
+  html.motion .topbar .nav-links a { animation: none; }
+}
+
+/* ----- Wire ticker: soft edge fades + pause on hover ----- */
+.ticker { position: relative; }
+.ticker::before, .ticker::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 56px;
+  z-index: 1;
+  pointer-events: none;
+}
+.ticker::before { left: 0;  background: linear-gradient(90deg,  var(--ink), transparent); }
+.ticker::after  { right: 0; background: linear-gradient(270deg, var(--ink), transparent); }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+
+/* ----- Cards & rows: image zoom + headline underline sweep ----- */
+.art img {
+  transition: transform .65s cubic-bezier(.22,.61,.36,1);
+  transform-origin: center;
+}
+.card:hover .art img,
+.row:hover .art img { transform: scale(1.045); }
+
+.card h3 a, .row h3 a {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: color .2s ease, text-decoration-color .35s ease;
+}
+.card:hover h3 a, .row:hover h3 a { text-decoration-color: currentColor; }
+
+.row { transition: background .25s ease; }
+
+/* ----- Scroll reveal: richer curve (delays batch-staggered in main.js) ----- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.19,1,.22,1);
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* ----- Article header choreography ----- */
+html.motion .article-header .eyebrow { animation: cmTrackIn .8s cubic-bezier(.19,1,.22,1) .1s both; display: inline-block; }
+
+/* Headline hidden until JS wraps its words; failsafe pops it in at .9s
+   if the script somehow never runs. */
+html.motion .article-header h1 { opacity: 0; animation: cmFade .01s .9s forwards; }
+html.motion .article-header h1.split { opacity: 1; animation: none; }
+
+.article-header h1 .w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: .12em;   /* keep descenders inside the mask */
+  margin-bottom: -.12em;
+}
+.article-header h1 .wi { display: inline-block; }
+html.motion .article-header h1.split .wi {
+  transform: translateY(112%);
+  animation: cmWordUp .75s cubic-bezier(.19,1,.22,1) both;
+  /* per-word delay set inline by main.js */
+}
+
+html.motion .article-header .standfirst  { animation: cmFadeUp .8s cubic-bezier(.19,1,.22,1) .48s both; }
+html.motion .article-header .byline-line { animation: cmFadeUp .8s cubic-bezier(.19,1,.22,1) .6s both; }
+
+/* ----- Hero image: cinematic settle ----- */
+html.motion .article-hero     { animation: cmFadeUp .9s cubic-bezier(.19,1,.22,1) .35s both; }
+html.motion .article-hero img { animation: cmSettle 1.6s cubic-bezier(.19,1,.22,1) .35s both; }
+
+/* ----- Drop cap: ultramarine initial on the article opener -----
+   `.has-cap` is added by main.js to the FIRST .prose block only (some
+   articles split prose around inline photos — no mid-article drop caps). */
+article .prose.has-cap > p:first-of-type::first-letter {
+  float: left;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 3.15em;
+  line-height: .82;
+  padding: .05em .13em 0 0;
+  color: var(--accent);
+}
+
+/* Opening paragraph joins the load choreography; the rest reveal on scroll */
+html.motion article .prose.has-cap > *:first-child { animation: cmFadeUp .85s cubic-bezier(.19,1,.22,1) .55s both; }
+
+html.motion article .prose > .pr {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.22,.61,.36,1);
+}
+html.motion article .prose > .pr.in { opacity: 1; transform: none; }
+
+/* ----- Reading progress: gradient thread with a soft glow ----- */
+.progress {
+  background: linear-gradient(90deg, var(--accent), #7b83ff);
+  box-shadow: 0 0 8px rgba(36, 48, 255, .35);
+  border-radius: 0 3px 3px 0;
+}
+
+/* ----- Page heads (section pages, account) join the sequence ----- */
+html.motion .page-head { animation: cmFadeUp .7s cubic-bezier(.19,1,.22,1) .15s both; }
+
+/* ----- Account page: cards lift softly ----- */
+.account-card, .account-upsell {
+  transition: box-shadow .3s ease, transform .3s ease, border-color .3s ease;
+}
+.account-card:hover { box-shadow: var(--shadow-card); border-color: #dcdfe6; }
+
+/* ----- Buttons: quiet lift ----- */
+.btn-accent:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(36, 48, 255, .28); }
+.btn-accent:active { transform: translateY(0); }
+
+/* ----- Reduced motion: belt and braces on top of html.motion gating ----- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, article .prose > .pr { opacity: 1; transform: none; transition: none; }
+  html.motion .article-header h1 { opacity: 1; animation: none; }
+}

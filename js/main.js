@@ -32,15 +32,29 @@
 
   /* Scroll-reveal animations (respects reduced motion) ------------ */
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Auto-enroll elements that should reveal but lack the class in HTML,
+     so existing pages get the choreography without content edits. */
+  if (!reduced) {
+    document
+      .querySelectorAll(".row-list .row, .account-card, .account-upsell, .most-read-list li")
+      .forEach((el) => el.classList.add("reveal"));
+  }
+
   const revealEls = document.querySelectorAll(".reveal");
 
   if (!reduced && "IntersectionObserver" in window && revealEls.length) {
     const io = new IntersectionObserver(
       (entries) => {
+        /* Elements entering in the same frame stagger like a dealt hand;
+           a lone element scrolled into view reveals with zero delay. */
+        let i = 0;
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = Math.min(i, 8) * 70 + "ms";
             entry.target.classList.add("in");
             io.unobserve(entry.target);
+            i++;
           }
         });
       },
@@ -101,5 +115,68 @@
         });
       }
     });
+  }
+})();
+
+/* CREDIBLE — motion choreography (19 Jul 2026)
+   Word-by-word headline reveal + prose scroll reveals on article pages.
+   Runs only when <html> carries the .motion class (set by a one-line
+   inline script in <head>, skipped for reduced-motion visitors). */
+(function () {
+  "use strict";
+
+  if (!document.documentElement.classList.contains("motion")) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  /* 1. Split the article headline into masked words that rise in sequence */
+  const h1 = document.querySelector(".article-header h1");
+  if (h1 && !h1.querySelector(".w")) {
+    const words = h1.textContent.trim().split(/\s+/);
+    h1.textContent = "";
+    words.forEach((word, i) => {
+      const mask = document.createElement("span");
+      mask.className = "w";
+      const inner = document.createElement("span");
+      inner.className = "wi";
+      inner.textContent = word;
+      inner.style.animationDelay = (0.16 + i * 0.05).toFixed(2) + "s";
+      mask.appendChild(inner);
+      h1.appendChild(mask);
+      if (i < words.length - 1) h1.appendChild(document.createTextNode(" "));
+    });
+    h1.classList.add("split");
+  }
+
+  /* 2. Article body: paragraphs, headings, figures rise gently on scroll.
+        Some articles split prose into multiple blocks around inline photos —
+        instrument them all. The very first child of the first block is
+        skipped: it joins the page-load sequence (and gets the drop cap). */
+  const proseBlocks = document.querySelectorAll("article .prose");
+  if (proseBlocks.length && "IntersectionObserver" in window) {
+    proseBlocks[0].classList.add("has-cap");
+    const kids = [];
+    proseBlocks.forEach((block, b) => {
+      Array.from(block.children).forEach((el, i) => {
+        if (b === 0 && i === 0) return;
+        kids.push(el);
+      });
+    });
+    kids.forEach((el) => el.classList.add("pr"));
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        let i = 0;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = Math.min(i, 4) * 60 + "ms";
+            entry.target.classList.add("in");
+            io.unobserve(entry.target);
+            i++;
+          }
+        });
+      },
+      { rootMargin: "0px 0px -6% 0px", threshold: 0.05 }
+    );
+    kids.forEach((el) => io.observe(el));
   }
 })();
