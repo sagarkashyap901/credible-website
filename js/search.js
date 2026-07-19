@@ -38,7 +38,7 @@
     results.innerHTML = items
       .map(
         (a) =>
-          '<a href="' + a.url + '">' +
+          '<a href="/articles/' + a.url + '">' +
           '<span class="r-section">' + a.section + " · " + a.date + "</span>" +
           '<div class="r-title">' + a.title + "</div>" +
           '<div class="r-excerpt">' + a.excerpt + "</div>" +

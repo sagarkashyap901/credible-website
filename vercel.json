@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    {
+      "source": "/:slug([a-zA-Z0-9-]+).html",
+      "destination": "/articles/:slug.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

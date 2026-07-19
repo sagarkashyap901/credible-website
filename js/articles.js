@@ -2,12 +2,15 @@
    ONE list of every article on the site. This powers the search.
    ─────────────────────────────────────────────────────────────
    HOW TO PUBLISH A NEW ARTICLE:
-   1. Copy article-template.html → e.g. my-new-story.html
+   1. Copy articles/article-template.html → articles/my-new-story.html
    2. Write your piece in that file (title, standfirst, body).
-   3. Add ONE entry to the TOP of this list:
+   3. Add ONE entry to the TOP of this list — url is the BARE
+      filename only, no "articles/" prefix (search.js and related.js
+      add that automatically):
       { title: "...", url: "my-new-story.html", section: "India",
         excerpt: "...", date: "Jul 05 2026" },
-   4. Optionally add a card for it on index.html / its section page.
+   4. Optionally add a card for it on index.html / its section page,
+      linking to "articles/my-new-story.html".
    5. Re-deploy (git add -A && git commit -m "..." && git push). Done — it's live and searchable.
 */
 

@@ -16,7 +16,7 @@
   var picks = same.concat(rest).slice(0, 3);
 
   box.innerHTML = picks.map(function (a) {
-    return '<a href="' + a.url + '">' +
+    return '<a href="/articles/' + a.url + '">' +
       '<span class="r-section">' + a.section + " · " + a.date + '</span>' +
       '<div class="r-title">' + a.title + '</div></a>';
   }).join("");
