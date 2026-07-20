@@ -579,8 +579,8 @@ h1, h2, h3, h4 {
   background: var(--accent-dim);
   color: var(--accent-ink);
   border-radius: 6px;
-  padding: 1px 6px;
-  font-size: .82em;
+  padding: 2px 8px;
+  font-size: 1em;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -1936,11 +1936,14 @@ body { font-optical-sizing: auto; }
    single rule (not fluid, not layered on other rules) so it stays the only
    thing governing mobile article size. If article text ever needs resizing
    again, THIS is the one place to change — do not add another .prose rule
-   anywhere else in this file. */
+   anywhere else in this file.
+   20 Jul 2026: bumped 16px → 17.5px on Sagar's feedback that mobile body
+   text read too small compared to desktop. Still intentionally under the
+   18px desktop size, just a smaller gap now. */
 @media (max-width: 640px) {
-  .prose { font-size: 16px; line-height: 1.72; }
+  .prose { font-size: 17.5px; line-height: 1.72; }
   .prose > p:first-of-type { font-size: 1.04em; line-height: 1.65; }
-  .prose blockquote { font-size: 19px; }
+  .prose blockquote { font-size: 19.5px; }
 }
 .prose li { margin-bottom: 0.55em; }
 
