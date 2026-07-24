@@ -2,11 +2,16 @@
    Runs only on pages with <body data-premium="true">.
    Free articles (no data-premium, or data-premium="false") are untouched.
 
-   Flow:
-   1. Is the reader signed in? (uses the same Supabase project as js/auth.js)
-   2. If yes, do they have an active subscription row in the `subscriptions` table?
-   3. If either answer is "no" — hide the hero image, body, related stories and
-      end-of-article CTA, and show the "Members Only" block instead.
+   FAIL-CLOSED DESIGN (25 Jul 2026): premium content is hidden and the
+   "Members Only" gate is shown by CSS the moment the page loads — before
+   this script even runs. This script's only job is to add the
+   .paywall-unlocked class to <body>, and ONLY after positively confirming
+   an active subscription. If anything fails along the way (not signed in,
+   no active row, a network error), the page simply stays in its default
+   locked state. There is no code path that shows premium content by
+   accident — the old version did the opposite (visible by default, hidden
+   only after an async check succeeded) and a script failure or slow
+   network could leave a premium article fully readable for free.
    Uses the same SUPABASE_URL / SUPABASE_ANON_KEY already configured in js/auth.js. */
 
 (function () {
@@ -23,30 +28,34 @@
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   window.CREDIBLE_SB = sb;
 
-  /* ---- Content gating: only runs on articles marked data-premium="true" ---- */
+  /* ---- Content gating: only runs on articles marked data-premium="true" ----
+     CSS (see style.css §22) hides premium content and shows the gate by
+     DEFAULT the instant the page loads — this code's only job is to add
+     .paywall-unlocked to <body> if, and only if, it can positively confirm
+     an active subscription. Any failure (no session, no active row, a
+     network error, Supabase being unreachable) simply leaves the page in
+     its default locked state — there is no path that unlocks by accident. */
   if (isPremiumPage) {
-    const gate = document.querySelector("[data-paywall-block]");
-    const hideOnLock = document.querySelectorAll(
-      ".article-hero, .prose, .figure, .related, .article-end, .cta:not(.paywall-gate)"
-    );
-
-    function lock() {
-      hideOnLock.forEach((el) => (el.style.display = "none"));
-      if (gate) gate.style.display = "block";
+    function unlock() {
+      document.body.classList.add("paywall-unlocked");
     }
 
     (async function checkAccess() {
-      const { data: { session } } = await sb.auth.getSession();
-      if (!session) return lock();
+      try {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) return;
 
-      const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/subscriptions?user_id=eq.${session.user.id}&select=status,current_period_end`,
-        { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${session.access_token}` } }
-      );
-      const rows = await res.json().catch(() => []);
-      const sub = Array.isArray(rows) ? rows[0] : null;
-      const active = sub && sub.status === "active" && new Date(sub.current_period_end) > new Date();
-      if (!active) lock();
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/subscriptions?user_id=eq.${session.user.id}&select=status,current_period_end`,
+          { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${session.access_token}` } }
+        );
+        const rows = await res.json().catch(() => []);
+        const sub = Array.isArray(rows) ? rows[0] : null;
+        const active = sub && sub.status === "active" && new Date(sub.current_period_end) > new Date();
+        if (active) unlock();
+      } catch (err) {
+        /* Fail closed: any error during the check leaves the article locked. */
+      }
     })();
   }
 

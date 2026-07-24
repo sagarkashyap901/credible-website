@@ -1910,11 +1910,13 @@ body { font-optical-sizing: auto; }
 /* Standfirst stays Inter (sans) — do not inherit the serif */
 .standfirst { letter-spacing: 0; }
 
-/* Drop cap-free first paragraph, but give it a touch more presence */
-.prose > p:first-of-type {
-  font-size: 1.055em;
-  line-height: 1.7;
-}
+/* 25 Jul 2026: REMOVED the first-paragraph font-size bump (was 1.055em /
+   line-height 1.7) on Sagar's explicit, repeated feedback — the opening
+   paragraph must render at the exact same size as the rest of the body
+   copy. Do NOT reintroduce a font-size or line-height override on
+   `.prose > p:first-of-type` anywhere in this file. The drop cap alone
+   (via ::first-letter, further down) is the only opening-paragraph
+   flourish that should exist. */
 
 /* Blockquote — Baskerville italic sings here. Fixed size (not fluid) for the
    same reason as .prose above: several older rules earlier in the file set
@@ -1942,7 +1944,6 @@ body { font-optical-sizing: auto; }
    18px desktop size, just a smaller gap now. */
 @media (max-width: 640px) {
   .prose { font-size: 17.5px; line-height: 1.72; }
-  .prose > p:first-of-type { font-size: 1.04em; line-height: 1.65; }
   .prose blockquote { font-size: 19.5px; }
 }
 .prose li { margin-bottom: 0.55em; }
@@ -2396,4 +2397,39 @@ html.motion .page-head { animation: cmFadeUp .7s cubic-bezier(.19,1,.22,1) .15s 
 @media (prefers-reduced-motion: reduce) {
   .reveal, article .prose > .pr { opacity: 1; transform: none; transition: none; }
   html.motion .article-header h1 { opacity: 1; animation: none; }
+}
+
+/* ==========================================================================
+   22. PAYWALL — fail-closed by default (25 Jul 2026)
+   Previously, premium article content was visible in the DOM by default,
+   and paywall.js only hid it AFTER an async Supabase check resolved. Any
+   slow network, blocked CDN script, or JS error left the full article
+   readable for free with no subscription check ever completing — this is
+   how a premium piece was found fully open. Now the content is hidden by
+   CSS the instant a premium page loads (works even before JS runs, or if
+   JS never runs at all), and paywall.js only ADDS the .paywall-unlocked
+   class to <body> after it has positively confirmed an active
+   subscription. No code path can accidentally leave an article unlocked
+   — the only way in is an explicit, successful unlock. */
+body[data-premium="true"] .paywall-gate {
+  display: block !important;
+}
+body[data-premium="true"] .article-hero,
+body[data-premium="true"] .prose,
+body[data-premium="true"] .figure,
+body[data-premium="true"] .related,
+body[data-premium="true"] .article-end,
+body[data-premium="true"] .cta:not(.paywall-gate) {
+  display: none !important;
+}
+body[data-premium="true"].paywall-unlocked .paywall-gate {
+  display: none !important;
+}
+body[data-premium="true"].paywall-unlocked .article-hero,
+body[data-premium="true"].paywall-unlocked .prose,
+body[data-premium="true"].paywall-unlocked .figure,
+body[data-premium="true"].paywall-unlocked .related,
+body[data-premium="true"].paywall-unlocked .article-end,
+body[data-premium="true"].paywall-unlocked .cta:not(.paywall-gate) {
+  display: block !important;
 }
