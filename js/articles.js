@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "Iran's Shadow War Reaches the Royal Family",
+    url: "irans-shadow-war-uk-soil.html",
+    section: "World",
+    excerpt: "A widening campaign of threats and plots on British soil collides with London's decision to keep hosting U.S. bombers bound for Iran.",
+    date: "25 Jul 2026"
+  },
+  {
     title: "How China Quietly Saved the World Economy",
     url: "china-quietly-saved-world-economy.html",
     section: "World",
