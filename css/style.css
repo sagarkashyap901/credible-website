@@ -2400,36 +2400,72 @@ html.motion .page-head { animation: cmFadeUp .7s cubic-bezier(.19,1,.22,1) .15s 
 }
 
 /* ==========================================================================
-   22. PAYWALL — fail-closed by default (25 Jul 2026)
-   Previously, premium article content was visible in the DOM by default,
-   and paywall.js only hid it AFTER an async Supabase check resolved. Any
-   slow network, blocked CDN script, or JS error left the full article
-   readable for free with no subscription check ever completing — this is
-   how a premium piece was found fully open. Now the content is hidden by
-   CSS the instant a premium page loads (works even before JS runs, or if
-   JS never runs at all), and paywall.js only ADDS the .paywall-unlocked
-   class to <body> after it has positively confirmed an active
-   subscription. No code path can accidentally leave an article unlocked
-   — the only way in is an explicit, successful unlock. */
-body[data-premium="true"] .paywall-gate {
-  display: block !important;
+   22. PAYWALL — WSJ-style teaser, fail-closed by default (25 Jul 2026)
+   Reference: Sagar sent a WSJ screenshot — headline, standfirst, hero image
+   and the opening of the article stay visible, the text fades into the
+   page background partway through, and a subscribe box follows right
+   after. Everything below that (inline charts, related stories, the
+   end-of-article CTA) stays fully hidden until unlocked.
+
+   Still fail-closed: the cap/fade/visible-gate state below is the DEFAULT
+   the instant a premium page loads — before any JS runs. js/paywall.js's
+   only job is to add .paywall-unlocked to <body>, and only after it has
+   positively confirmed an active subscription. No code path can
+   accidentally show the full article for free — the old version showed
+   everything by default and only hid it after an async check succeeded,
+   which is how a premium piece was found fully open. */
+
+/* Hero, headline, standfirst are never touched — always visible either way */
+
+/* Prose: capped height, fading into the page background */
+body[data-premium="true"] .prose {
+  position: relative;
+  max-height: 480px;
+  overflow: hidden;
 }
-body[data-premium="true"] .article-hero,
-body[data-premium="true"] .prose,
+body[data-premium="true"] .prose::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(250, 249, 246, 0) 0%, var(--paper) 88%);
+  pointer-events: none;
+}
+@media (max-width: 640px) {
+  body[data-premium="true"] .prose { max-height: 340px; }
+  body[data-premium="true"] .prose::after { height: 150px; }
+}
+
+/* Fully hidden until unlocked: inline charts, related stories, footer CTA */
 body[data-premium="true"] .figure,
 body[data-premium="true"] .related,
 body[data-premium="true"] .article-end,
 body[data-premium="true"] .cta:not(.paywall-gate) {
   display: none !important;
 }
-body[data-premium="true"].paywall-unlocked .paywall-gate {
-  display: none !important;
+
+/* The subscribe box: visible by default, sits right after the faded prose
+   (its position in the DOM was moved to right after .prose for exactly
+   this reason — see articles/*.html) */
+body[data-premium="true"] .paywall-gate {
+  display: block !important;
+  margin-top: -8px;
 }
-body[data-premium="true"].paywall-unlocked .article-hero,
-body[data-premium="true"].paywall-unlocked .prose,
+
+/* Unlocked: remove the cap/fade, show everything, hide the gate */
+body[data-premium="true"].paywall-unlocked .prose {
+  max-height: none;
+  overflow: visible;
+}
+body[data-premium="true"].paywall-unlocked .prose::after {
+  content: none;
+}
 body[data-premium="true"].paywall-unlocked .figure,
 body[data-premium="true"].paywall-unlocked .related,
 body[data-premium="true"].paywall-unlocked .article-end,
 body[data-premium="true"].paywall-unlocked .cta:not(.paywall-gate) {
   display: block !important;
+}
+body[data-premium="true"].paywall-unlocked .paywall-gate {
+  display: none !important;
 }
