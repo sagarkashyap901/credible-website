@@ -59,8 +59,15 @@
     })();
   }
 
-  /* ---- Checkout: works on ANY page with a [data-checkout] button — ---- */
-  /* ---- articles, the Subscribe page, wherever "Subscribe — ₹119" appears ---- */
+  /* ---- Checkout: works on ANY page with a [data-checkout] element ----
+     These are now real <a href="/subscribe.html"> links, not bare
+     <button>s — if this script never runs (blocked, errored, Supabase
+     unreachable) the native link still takes the reader to the Subscribe
+     page. When JS does run, we intercept the click to either redirect to
+     Subscribe (no session) or open Razorpay directly (already signed in).
+     Root-relative "/subscribe.html" is used everywhere here — a bare
+     "subscribe.html" previously 404'd when clicked from inside /articles/,
+     since the relative path resolved against the wrong folder. */
   document.addEventListener("click", async (e) => {
     const btn = e.target.closest("[data-checkout]");
     if (!btn) return;
@@ -68,13 +75,21 @@
 
     const { data: { session } } = await sb.auth.getSession();
     if (!session) {
-      window.location.href = "subscribe.html";
+      window.location.href = "/subscribe.html";
       return;
     }
 
     const original = btn.textContent;
+    /* btn.disabled is a no-op on <a> elements (article checkout links) —
+       pointer-events + aria-disabled works for both <a> and <button>. */
+    function setBusy(busy) {
+      btn.disabled = busy; // still correct for <button> on subscribe.html
+      btn.style.pointerEvents = busy ? "none" : "";
+      if (busy) btn.setAttribute("aria-disabled", "true");
+      else btn.removeAttribute("aria-disabled");
+    }
     btn.textContent = "Loading…";
-    btn.disabled = true;
+    setBusy(true);
 
     try {
       const subRes = await fetch("/api/create-subscription", {
@@ -117,7 +132,7 @@
         modal: {
           ondismiss: function () {
             btn.textContent = original;
-            btn.disabled = false;
+            setBusy(false);
           },
         },
       });
@@ -125,7 +140,7 @@
     } catch (err) {
       alert(err.message);
       btn.textContent = original;
-      btn.disabled = false;
+      setBusy(false);
     }
   });
 })();

@@ -158,7 +158,7 @@
         signoutBtn.textContent = "Signing out…";
         signoutBtn.disabled = true;
         await sb.auth.signOut();
-        window.location.href = "index.html";
+        window.location.href = "/index.html";
       });
     }
 

@@ -46,7 +46,7 @@
         subscribeBtn.addEventListener("click", async function (e) {
           e.preventDefault();
           await sb.auth.signOut();
-          window.location.href = "index.html";
+          window.location.href = "/index.html";
         });
       }
     });
