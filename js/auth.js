@@ -11,8 +11,14 @@
       That's your email verification — Supabase sends the link
       automatically and won't activate the account until clicked.
    4. Authentication → URL Configuration → Site URL:
-      https://credible-media.netlify.app
-   5. Re-deploy this folder to Netlify. Done.
+      https://credible-website-virid.vercel.app
+      (update to https://credible.news once that domain is live)
+   5. Authentication → URL Configuration → Redirect URLs: add
+      https://credible-website-virid.vercel.app/reset-password.html
+      This is required for the "Forgot your password?" flow — without it,
+      Supabase will reject the emailed reset link. Add the credible.news
+      version here too once that domain is live.
+   6. Re-deploy this folder. Done.
 
    WHERE IS THE DATA & IS IT SECURE?
    · Stored in your own Supabase project: a managed PostgreSQL
@@ -47,6 +53,10 @@ window.CREDIBLE_SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
   const tabs = document.querySelectorAll(".auth-tabs button");
   const signupForm = document.getElementById("signup-form");
   const signinForm = document.getElementById("signin-form");
+  const forgotForm = document.getElementById("forgot-form");
+  const forgotLink = document.getElementById("forgot-link");
+  const backToSignin = document.getElementById("back-to-signin");
+  const authTabs = document.querySelector(".auth-tabs");
   const msg = document.getElementById("auth-msg");
   const title = document.getElementById("auth-title");
   const guestPanel = document.getElementById("guest-panel");
@@ -129,7 +139,7 @@ window.CREDIBLE_SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
 
   /* ---- Sign up (email verification link — Site URL must be set correctly
      in Supabase → Authentication → URL Configuration → Site URL) ---- */
-  signupForm.addEventListener("submit", async (e) => {
+  if (signupForm) signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!configured) return notConfigured();
     const name = document.getElementById("su-name").value.trim();
@@ -156,7 +166,7 @@ window.CREDIBLE_SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
   });
 
   /* ---- Sign in ---- */
-  signinForm.addEventListener("submit", async (e) => {
+  if (signinForm) signinForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!configured) return notConfigured();
     const email = document.getElementById("si-email").value.trim();
@@ -175,4 +185,64 @@ window.CREDIBLE_SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
     // Immediately show the membership/checkout panel — don't navigate away
     setTimeout(renderCorrectPanel, 800);
   });
+
+  /* ---- Forgot password ----
+     "Forgot your password?" swaps the sign-in form for a one-field email
+     form. Supabase emails a link that lands on reset-password.html, where
+     the reader sets a new password. NOTE for Sagar: the redirect URL below
+     (window.location.origin + "/reset-password.html") must be added to
+     Supabase → Authentication → URL Configuration → Redirect URLs, or the
+     emailed link will be rejected. Add it for both the current Vercel
+     domain and credible.news once that's live. */
+  if (forgotLink && forgotForm && signinForm) {
+    forgotLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      signinForm.style.display = "none";
+      forgotForm.style.display = "block";
+      if (authTabs) authTabs.style.display = "none";
+      title.textContent = "Reset your password";
+      msg.className = "auth-msg";
+      const fpEmail = document.getElementById("fp-email");
+      const siEmail = document.getElementById("si-email");
+      if (fpEmail && siEmail && siEmail.value) fpEmail.value = siEmail.value;
+    });
+  }
+
+  if (backToSignin && forgotForm && signinForm) {
+    backToSignin.addEventListener("click", (e) => {
+      e.preventDefault();
+      forgotForm.style.display = "none";
+      signinForm.style.display = "block";
+      if (authTabs) authTabs.style.display = "flex";
+      title.textContent = "Welcome back";
+      msg.className = "auth-msg";
+      forgotForm.reset();
+    });
+  }
+
+  if (forgotForm) {
+    forgotForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!configured) return notConfigured();
+      const email = document.getElementById("fp-email").value.trim();
+
+      show("Sending reset link…", "ok");
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + "/reset-password.html"
+      });
+
+      // Deliberately the same message whether or not the email exists —
+      // this is how Supabase's own endpoint behaves, and it keeps us from
+      // leaking which emails have accounts on Credible.
+      if (error && !/rate limit/i.test(error.message)) {
+        show(error.message, "err");
+        return;
+      }
+      show(
+        "If an account exists for " + email + ", a password reset link is on its way. Check your inbox (and spam folder) — the link expires in 1 hour.",
+        "ok"
+      );
+      forgotForm.reset();
+    });
+  }
 })();

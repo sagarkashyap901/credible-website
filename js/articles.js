@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "What Dharmendra Pradhan Actually Built: A Scorecard of His Five Years at the Education Ministry",
+    url: "dharmendra-pradhan-education-legacy.html",
+    section: "India",
+    excerpt: "Beyond the resignation headlines, Pradhan's 2021 to 2026 tenure produced the deepest structural overhaul of Indian education in three decades.",
+    date: "26 Jul 2026"
+  },
+  {
     title: "Iran's Shadow War Reaches the Royal Family",
     url: "irans-shadow-war-uk-soil.html",
     section: "World",
