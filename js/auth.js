@@ -45,9 +45,23 @@ window.CREDIBLE_SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
   const configured =
     SUPABASE_URL.startsWith("https://") && SUPABASE_ANON_KEY.length > 30;
 
-  const sb = configured
-    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-    : null;
+  /* Wrapped in try/catch on purpose: if the Supabase CDN script is ever
+     slow, blocked, or fails to load, window.supabase would be undefined
+     and this line would throw — which, left unguarded, silently kills
+     EVERYTHING below it in this file, including pure on-page UI wiring
+     (tab switching, the "Forgot your password?" toggle) that doesn't
+     even need Supabase to work. Now a Supabase failure only disables the
+     features that actually require it; sb just stays null and code that
+     needs it checks `configured` first and shows a clear message instead
+     of the button silently doing nothing. */
+  let sb = null;
+  if (configured && window.supabase) {
+    try {
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (err) {
+      console.error("Credible: Supabase client failed to initialize", err);
+    }
+  }
 
   /* ---- Elements ---- */
   const tabs = document.querySelectorAll(".auth-tabs button");
@@ -65,7 +79,7 @@ window.CREDIBLE_SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
 
   /* ---- Session-aware panels: show the RIGHT view for this reader ---- */
   async function renderCorrectPanel() {
-    if (!guestPanel || !memberPanel) return; // not on the subscribe page
+    if (!guestPanel || !memberPanel || !sb) return; // not on the subscribe page, or Supabase unavailable
 
     const { data: { session } } = await sb.auth.getSession();
 
