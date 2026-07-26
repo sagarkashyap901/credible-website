@@ -574,16 +574,9 @@ h1, h2, h3, h4 {
   font-style: italic;
 }
 
-.prose .key-stat {
-  font-family: var(--font-mono);
-  background: var(--accent-dim);
-  color: var(--accent-ink);
-  border-radius: 6px;
-  padding: 2px 8px;
-  font-size: 1em;
-  font-weight: 700;
-  white-space: nowrap;
-}
+/* .key-stat lived here as a blue monospace "pill". Superseded 27 Jul 2026 by
+   the single canonical highlight rule in §23 at the end of this file — see
+   the note there. Do not re-add a .key-stat rule at this point in the file. */
 
 /* Inline figures & charts — Pudding style, breaking out of the text column */
 .figure {
@@ -1475,7 +1468,9 @@ body { background: var(--paper); color: var(--ink-body); font-family: var(--font
   margin: 1.7em 0;
 }
 
-.prose .key-stat { font-family: var(--font-display); font-weight: 600; letter-spacing: 0; }
+/* (A second .key-stat rule here used to force var(--font-display) — Inter —
+   which is exactly what made highlighted phrases visibly switch typeface
+   mid-sentence. Removed 27 Jul 2026; canonical rule is in §23.) */
 
 /* ---------- Article rhythm: header block spacing ---------- */
 .article-header { margin: 44px auto 30px; }
@@ -2468,4 +2463,49 @@ body[data-premium="true"].paywall-unlocked .cta:not(.paywall-gate) {
 }
 body[data-premium="true"].paywall-unlocked .paywall-gate {
   display: none !important;
+}
+
+/* ==========================================================================
+   23. READING MEASURE + INLINE HIGHLIGHT (27 Jul 2026)
+   Two changes, both requested after a side-by-side against Medium:
+
+   1. COLUMN WIDTH. The winning .prose rule capped the body at 660px while
+      the headline block above it ran to 760px — so the text column read as
+      visibly pinched, and narrower than Medium's. Everything in the article
+      stack (headline, body, share bar, related, CTA) now shares ONE measure
+      via --measure, so every left edge lines up down the page. The hero
+      image deliberately stays wider (980px) — that contrast is intentional.
+      To change the article column width, change --measure and nothing else.
+
+   2. INLINE HIGHLIGHT (.key-stat). This used to be a blue monospace pill:
+      it switched typeface AND colour mid-sentence, which broke the reading
+      line. It's now a Medium-style soft wash — same serif, same size, same
+      weight, same ink colour, with only a warm highlight band behind it, so
+      emphasis registers without interrupting the flow. box-decoration-break
+      keeps the band clean when a highlight wraps across two lines.
+   ========================================================================== */
+:root { --measure: 720px; }
+
+.prose,
+.article-header,
+.article-end,
+.article-follow,
+.related,
+.cta,
+.inline-photo,
+.key-points {
+  max-width: var(--measure);
+}
+
+.prose .key-stat {
+  /* Inherit the body type completely — no font, size, weight or colour shift */
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  background: rgba(224, 186, 96, .28);   /* warm wash, tuned for #FAF9F6 paper */
+  padding: .06em .16em;
+  border-radius: 2px;
+  white-space: normal;                    /* was nowrap — allow natural wrapping */
+  -webkit-box-decoration-break: clone;
+          box-decoration-break: clone;
 }
