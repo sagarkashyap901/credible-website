@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "Interceptor Shortage Forced Trump to Pause Bombing Iran",
+    url: "interceptor-shortage-trump-pause-iran.html",
+    section: "World",
+    excerpt: "After 13 consecutive nights of strikes, the United States halted its air campaign against Iran — driven less by diplomacy than by a depleted magazine of interceptors that will take until 2029 to rebuild.",
+    date: "27 Jul 2026"
+  },
+  {
     title: "What Dharmendra Pradhan Actually Built: A Scorecard of His Five Years at the Education Ministry",
     url: "dharmendra-pradhan-education-legacy.html",
     section: "India",
