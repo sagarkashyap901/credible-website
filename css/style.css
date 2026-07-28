@@ -2509,3 +2509,23 @@ body[data-premium="true"].paywall-unlocked .paywall-gate {
   -webkit-box-decoration-break: clone;
           box-decoration-break: clone;
 }
+
+/* ==========================================================================
+   24. INLINE PHOTO — portrait variant (28 Jul 2026)
+   .inline-photo forces every image to 3:2 via aspect-ratio + object-fit:cover,
+   which is right for landscape editorial photos but would crop a genuinely
+   vertical image (e.g. a satellite/orbital shot) to fit that frame. Add
+   .portrait to .inline-photo to show the image at its true, uncropped
+   aspect ratio instead — narrower and centered, since a full-measure-width
+   portrait image would run inconveniently tall down the page.
+   ========================================================================== */
+.inline-photo.portrait {
+  max-width: 480px;
+}
+.inline-photo.portrait img {
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+@media (max-width: 640px) {
+  .inline-photo.portrait { max-width: 320px; }
+}

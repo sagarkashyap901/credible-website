@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "Iran Warns Ukraine of 'Unforeseen' Consequences After Caspian Sea Attack",
+    url: "iran-warns-ukraine-caspian-sea-attack.html",
+    section: "World",
+    excerpt: "Kyiv says it hit a sanctioned weapons pipeline. Tehran says it hit a civilian freighter and killed a sailor — and the dispute has opened a third maritime front alongside Hormuz and the Red Sea.",
+    date: "28 Jul 2026"
+  },
+  {
     title: "Interceptor Shortage Forced Trump to Pause Bombing Iran",
     url: "interceptor-shortage-trump-pause-iran.html",
     section: "World",
