@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "Trump Runs Out of Patience on Iran, Orders New Strikes as Talks Collapse",
+    url: "trump-iran-strikes-talks-collapse.html",
+    section: "World",
+    excerpt: "Energy and infrastructure targets in the crosshairs; officials say Israel could join for the first time in weeks, raising fears of a fresh missile war.",
+    date: "2 Aug 2026"
+  },
+  {
     title: "Iran Warns Ukraine of 'Unforeseen' Consequences After Caspian Sea Attack",
     url: "iran-warns-ukraine-caspian-sea-attack.html",
     section: "World",
