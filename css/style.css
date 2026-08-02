@@ -644,6 +644,7 @@ h1, h2, h3, h4 {
 .cta-box {
   background: var(--ink);
   color: #fff;
+  border: 1px solid rgba(255,255,255,.08);
   border-radius: 16px;
   padding: 36px;
   position: relative;
@@ -1222,7 +1223,7 @@ h1, h2, h3, h4 {
 .paywall .per { font-family: var(--font-mono); font-size: 14px; color: #9aa2ff; }
 .paywall .perks { list-style: none; margin: 0 0 22px; padding: 0; display: flex; flex-direction: column; gap: 9px; position: relative; z-index: 1; }
 .paywall .perks li { color: #d4d7de; font-size: 14.5px; display: flex; gap: 10px; }
-.paywall .perks li::before { content: "→"; color: var(--accent); font-family: var(--font-mono); font-weight: 700; }
+.paywall .perks li::before { content: "✓"; color: var(--accent); font-family: var(--font-mono); font-weight: 700; }
 .paywall .btn { position: relative; z-index: 1; }
 .paywall .fineprint { font-family: var(--font-mono); font-size: 11px; color: #8d93a0; margin: 14px 0 0; position: relative; z-index: 1; }
 
@@ -2112,12 +2113,14 @@ body { font-optical-sizing: auto; }
 }
 
 /* ==========================================================================
-   22. Mobile fixes — account icon, headline wrap, footer order
+   22. Topbar auth states — profile icon replaces text, on mobile AND desktop
+   Three states, driven by body classes session-ui.js sets:
+   1. Signed out (default):       Sign in + Subscribe both visible
+   2. .is-authed (signed in):     profile icon replaces "Sign in"; Subscribe stays
+   3. .is-authed.is-member (paid): profile icon only — Subscribe hides too
+   Matches the pattern most subscription publications use — a plain
+   profile icon once signed in, not a persistent "Hi, Name" text button.
    ========================================================================== */
-
-/* Profile icon: hidden everywhere by default. session-ui.js adds .show
-   when the reader is signed in; it only actually renders on narrow
-   screens (below) — desktop keeps using the "Hi, Name" text button. */
 .account-btn {
   display: none;
   align-items: center;
@@ -2133,15 +2136,14 @@ body { font-optical-sizing: auto; }
 .account-btn svg { width: 19px; height: 19px; flex: none; }
 .account-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-@media (max-width: 860px) {
-  /* Show the compact profile icon once signed in... */
-  .account-btn.show { display: inline-flex; }
-  /* ...and retire the old text pills on mobile — "Hi, Name" and "Sign out"
-     both duplicate what the profile icon + account page now do, and there
-     isn't room for three controls next to the hamburger and search icon. */
-  body.is-authed .topbar .btn-ghost,
-  body.is-authed .topbar .btn-accent { display: none; }
-}
+/* State 2: signed in — profile icon appears, "Sign in" hides. Applies at
+   every screen size, not just mobile. */
+body.is-authed .account-btn.show { display: inline-flex; }
+body.is-authed .topbar .btn-ghost { display: none; }
+
+/* State 3: signed in AND an active member — Subscribe hides too, leaving
+   only the profile icon. */
+body.is-member .topbar .btn-accent { display: none; }
 
 /* Headlines: `text-wrap: balance` evens out line LENGTHS, which is great
    typography on wide desktop cards but on a narrow mobile column it often
@@ -2563,4 +2565,135 @@ body[data-premium="true"].paywall-unlocked .paywall-gate {
   font-size: 17px;
   color: #6b7090;
   text-decoration: line-through;
+}
+
+/* ==========================================================================
+   26. SIGN-IN PROMPT — anonymous visitors only, free articles (2 Aug 2026)
+   Distinct from .sub-prompt (which targets signed-in-but-free readers and
+   asks them to subscribe). This one targets people who aren't signed in at
+   all, on free articles only, and asks ONLY for an account — no price, no
+   subscribe button. Mirrors .sub-prompt's visual language exactly (same
+   dark card, same mobile bottom-sheet behavior) for consistency, but is a
+   fully separate component with its own dismiss memory, since the two
+   popups serve different audiences and should never interfere with the
+   other's dismissal state.
+   ========================================================================== */
+.signin-prompt {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease;
+}
+.signin-prompt.open { opacity: 1; pointer-events: auto; }
+
+.signin-prompt-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(19, 19, 19, .55);
+  backdrop-filter: blur(3px);
+}
+
+.signin-prompt-box {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  background: #131313;
+  color: #fff;
+  border-radius: 16px;
+  padding: 34px 32px 28px;
+  box-shadow: 0 30px 70px rgba(0,0,0,.42);
+  transform: translateY(14px) scale(.985);
+  transition: transform .24s cubic-bezier(.2,.8,.2,1);
+  overflow: hidden;
+  text-align: center;
+}
+.signin-prompt.open .signin-prompt-box { transform: translateY(0) scale(1); }
+
+.signin-prompt-box::before {
+  content: "";
+  position: absolute;
+  top: -70px; left: 50%;
+  transform: translateX(-50%);
+  width: 240px; height: 200px;
+  background: radial-gradient(circle, rgba(36,48,255,.38) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.signin-prompt-x {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 32px; height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #8d93a0;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+  z-index: 2;
+}
+.signin-prompt-x:hover { background: rgba(255,255,255,.09); color: #fff; }
+
+.signin-prompt-eyebrow {
+  position: relative; z-index: 1;
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #9aa2ff;
+  margin-bottom: 12px;
+}
+.signin-prompt-box h2 {
+  position: relative; z-index: 1;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 760;
+  letter-spacing: -.02em;
+  margin: 0 0 10px;
+  color: #fff;
+}
+.signin-prompt-box p {
+  position: relative; z-index: 1;
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #c7cbd4;
+  margin: 0 0 22px;
+}
+.signin-prompt-cta {
+  position: relative; z-index: 1;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 13px;
+}
+.signin-prompt-fine {
+  position: relative; z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #8d93a0;
+  margin: 14px 0 0;
+}
+
+@media (max-width: 520px) {
+  .signin-prompt { align-items: flex-end; padding: 0; }
+  .signin-prompt-box {
+    max-width: 100%;
+    border-radius: 18px 18px 0 0;
+    padding: 30px 22px 24px;
+    transform: translateY(100%);
+  }
+  .signin-prompt.open .signin-prompt-box { transform: translateY(0); }
+  .signin-prompt-box h2 { font-size: 21px; }
 }

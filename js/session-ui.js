@@ -1,6 +1,10 @@
 /* CREDIBLE — session-ui.js
-   Runs on every page. If the reader is signed in, swaps the "Sign in" /
-   "Subscribe" buttons in the topbar for their name and a Sign out link.
+   Runs on every page. Drives the topbar's three auth states:
+     1. Signed out:            Sign in + Subscribe both visible (default HTML)
+     2. Signed in, no sub:     profile icon replaces "Sign in"; Subscribe stays
+     3. Signed in + active sub: profile icon only — Subscribe hides too
+   Sign-out itself lives on account.html, not in the topbar — matches how
+   most subscription publications handle it (profile icon → account page).
    Reuses the same Supabase config already set by js/auth.js. */
 
 (function () {
@@ -17,46 +21,41 @@
   var sb = window.CREDIBLE_SB || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   window.CREDIBLE_SB = sb;
 
-  function renderSignedIn(firstName) {
+  function markSignedIn(firstName) {
     document.body.classList.add("is-authed");
-
-    document.querySelectorAll(".topbar-actions, .masthead-actions").forEach(function (actions) {
-      var signInBtn = actions.querySelector(".btn-ghost");
-      var subscribeBtn = actions.querySelector(".btn-accent");
-      var acctBtn = actions.querySelector(".account-btn");
-
-      // "Sign in" becomes a working link to the reader's account page.
-      if (signInBtn) {
-        signInBtn.textContent = "Hi, " + firstName;
-        signInBtn.setAttribute("href", "account.html");
-        signInBtn.setAttribute("title", "View your account");
-        signInBtn.style.cursor = "pointer";
-      }
-
-      // Compact profile icon — the mobile equivalent of "Hi, Name" above.
-      // CSS only actually displays this below 860px; harmless if shown
-      // elsewhere since it's just a second link to the same page.
-      if (acctBtn) {
-        acctBtn.classList.add("show");
-      }
-
-      if (subscribeBtn) {
-        subscribeBtn.textContent = "Sign out";
-        subscribeBtn.setAttribute("href", "#");
-        subscribeBtn.addEventListener("click", async function (e) {
-          e.preventDefault();
-          await sb.auth.signOut();
-          window.location.href = "/index.html";
-        });
-      }
+    document.querySelectorAll(".account-btn").forEach(function (btn) {
+      btn.classList.add("show");
+      btn.setAttribute("title", "Hi, " + firstName + " — view your account");
     });
   }
 
-  sb.auth.getSession().then(function (result) {
+  function markMember() {
+    document.body.classList.add("is-member");
+  }
+
+  sb.auth.getSession().then(async function (result) {
     var session = result.data && result.data.session;
-    if (!session) return;
+    if (!session) return; // signed out — default topbar state, nothing to do
+
     var meta = session.user.user_metadata || {};
     var name = meta.full_name || session.user.email.split("@")[0];
-    renderSignedIn(name.split(" ")[0]);
+    markSignedIn(name.split(" ")[0]);
+
+    // Check subscription status — same query pattern as js/paywall.js.
+    // Any failure here just leaves the reader in the "signed in, no sub"
+    // state, which is the safe default (never hides the Subscribe button
+    // without a positive, confirmed active subscription).
+    try {
+      var res = await fetch(
+        SUPABASE_URL + "/rest/v1/subscriptions?user_id=eq." + session.user.id + "&select=status,current_period_end",
+        { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + session.access_token } }
+      );
+      var rows = await res.json().catch(function () { return []; });
+      var sub = Array.isArray(rows) ? rows[0] : null;
+      var active = sub && sub.status === "active" && new Date(sub.current_period_end) > new Date();
+      if (active) markMember();
+    } catch (err) {
+      /* Leave as signed-in-but-not-member — fail safe, not fail hidden. */
+    }
   });
 })();
