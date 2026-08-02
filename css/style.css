@@ -2529,3 +2529,38 @@ body[data-premium="true"].paywall-unlocked .paywall-gate {
 @media (max-width: 640px) {
   .inline-photo.portrait { max-width: 320px; }
 }
+
+/* ==========================================================================
+   25. LAUNCH OFFER — 25% off, ₹119 → ₹89/month (2 Aug 2026)
+   Applied wherever the site shows a price (.paywall .price). Badge sits
+   above the price line; the old price shows struck through beside the new
+   one so the discount is legible at a glance, not just implied.
+   ========================================================================== */
+.paywall .offer-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ffd166, #ffb703);
+  color: #1a1200;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+.paywall .was {
+  font-family: var(--font-mono);
+  font-size: 19px;
+  color: #8b90a8;
+  text-decoration: line-through;
+  text-decoration-color: #6b7090;
+  margin-right: 2px;
+}
+.sub-prompt-price .was {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: #6b7090;
+  text-decoration: line-through;
+}

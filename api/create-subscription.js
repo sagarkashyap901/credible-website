@@ -1,8 +1,13 @@
 // api/create-subscription.js
-// Creates a Razorpay SUBSCRIPTION (₹119/month recurring) for a signed-in reader.
+// Creates a Razorpay SUBSCRIPTION for a signed-in reader. The amount actually
+// charged is whatever RAZORPAY_PLAN_ID points to in Razorpay — this file does
+// NOT set the price. As of 2 Aug 2026 the site advertises a ₹89/month launch
+// offer (25% off ₹119); RAZORPAY_PLAN_ID must point to a Plan actually priced
+// at ₹89/month in the Razorpay Dashboard for that to be what customers pay.
 //
 // Extra env var needed in Vercel: RAZORPAY_PLAN_ID
-// (create the ₹119/month plan once in Razorpay Dashboard → Subscriptions → Plans)
+// (create the plan once in Razorpay Dashboard → Subscriptions → Plans, then
+// set this env var to that plan's ID and redeploy)
 
 async function getUserFromToken(req, supabaseUrl, serviceKey) {
   const auth = req.headers.authorization || "";
@@ -29,7 +34,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Server not fully configured — check Vercel environment variables." });
   }
   if (!RAZORPAY_PLAN_ID) {
-    return res.status(500).json({ error: "RAZORPAY_PLAN_ID missing — create the ₹119/month plan in Razorpay and add its ID in Vercel." });
+    return res.status(500).json({ error: "RAZORPAY_PLAN_ID missing — create the plan in Razorpay and add its ID in Vercel." });
   }
 
   const user = await getUserFromToken(req, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);

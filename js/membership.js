@@ -2,7 +2,7 @@
    Runs on every page. Two jobs:
 
    1. IF THE READER IS ALREADY A PAYING MEMBER
-      → hide every "Subscribe — ₹119/month" upsell box on the page.
+      → hide every "Subscribe — ₹89/month" upsell box on the page.
         A paying member should never be sold something they already own.
         (The paywall gate itself is left alone — paywall.js owns that.)
 
@@ -104,8 +104,8 @@
     // paywall.js + the Razorpay script (article pages). Everywhere else we
     // send them to subscribe.html rather than render a button that does nothing.
     var primary = canCheckoutInline
-      ? '<button class="btn btn-accent sub-prompt-cta" data-checkout type="button">Subscribe — ₹119/month</button>'
-      : '<a class="btn btn-accent sub-prompt-cta" href="subscribe.html">Subscribe — ₹119/month</a>';
+      ? '<button class="btn btn-accent sub-prompt-cta" data-checkout type="button">Subscribe — ₹89/month</button>'
+      : '<a class="btn btn-accent sub-prompt-cta" href="subscribe.html">Subscribe — ₹89/month</a>';
 
     wrap.innerHTML =
       '<div class="sub-prompt-backdrop" data-sub-close></div>' +
@@ -116,7 +116,7 @@
         '<span class="sub-prompt-eyebrow">Credible Membership</span>' +
         '<h2>Enjoying the story?</h2>' +
         '<p>Credible is independent, reader-funded journalism — no ads, no aggregation. Members get every deep dive and member-only briefing across India, World and AI &amp; Tech.</p>' +
-        '<div class="sub-prompt-price"><span class="amt">₹119</span><span class="per">/ month</span></div>' +
+        '<div class="sub-prompt-price"><span class="was">₹119</span><span class="amt">₹89</span><span class="per">/ month</span></div>' +
         '<div class="sub-prompt-actions">' +
           primary +
           '<button class="btn btn-ghost" data-sub-close type="button">Maybe later</button>' +

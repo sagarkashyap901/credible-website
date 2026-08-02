@@ -103,7 +103,7 @@
         key: sub.keyId,
         subscription_id: sub.subscriptionId,
         name: "Credible",
-        description: "Monthly Membership — ₹119/month, renews automatically",
+        description: "Monthly Membership — ₹89/month (25% launch offer), renews automatically",
         prefill: { email: session.user.email },
         theme: { color: "#2430ff" },
         handler: async function (response) {
