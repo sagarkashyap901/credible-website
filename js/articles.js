@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "North Korea Deleted Reunification From Its Constitution. Read It as a Victory Declaration.",
+    url: "north-korea-constitution-reunification.html",
+    section: "World",
+    excerpt: "American intelligence spent four decades predicting the regime's collapse. In March 2026, Pyongyang quietly rewrote its founding document to define itself as a permanent, bounded state.",
+    date: "5 Aug 2026"
+  },
+  {
     title: "Trump Pulls Back From Iran Strikes, Citing Progress Toward a Deal",
     url: "trump-cancels-iran-attack-hormuz-deal.html",
     section: "World",

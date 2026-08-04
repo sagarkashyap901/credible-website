@@ -1149,8 +1149,20 @@ h1, h2, h3, h4 {
   .topbar .nav-links.open { display: flex; }
   .topbar .nav-links a { padding: 12px 14px; font-size: 16px; }
   .topbar .hamburger { display: flex; order: -1; padding-left: 0; }
-  .topbar .btn-ghost { display: none; }
   .topbar .brand { font-size: 22px; }
+}
+
+/* Narrow phones: Sign in + Subscribe both need to fit next to the logo,
+   search icon and hamburger — the default button size (18px horizontal
+   padding, 14px text) is comfortable on desktop but too wide for two
+   pill buttons side by side under ~680px. Shrink just these two, just
+   here, rather than hiding one of them. */
+@media (max-width: 680px) {
+  .topbar-actions .btn-ghost,
+  .topbar-actions .btn-accent {
+    padding: 7px 12px;
+    font-size: 12.5px;
+  }
 }
 
 /* ---------- Bloomberg article typography ---------- */
@@ -2462,6 +2474,16 @@ body[data-premium="true"].paywall-unlocked .related,
 body[data-premium="true"].paywall-unlocked .article-end,
 body[data-premium="true"].paywall-unlocked .cta:not(.paywall-gate) {
   display: block !important;
+}
+
+/* 2 Aug 2026 fix: the rule above force-shows the bottom CTA the instant a
+   paid article unlocks — including for readers who are ALREADY active
+   members. That's exactly wrong: an active member should never see a
+   "subscribe" upsell. This rule is MORE specific (adds .is-member) so it
+   correctly wins over the one above for that one case, while free-account
+   readers unlocking a paid article (if that ever happens) still see it. */
+body[data-premium="true"].paywall-unlocked.is-member .cta:not(.paywall-gate) {
+  display: none !important;
 }
 body[data-premium="true"].paywall-unlocked .paywall-gate {
   display: none !important;
