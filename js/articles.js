@@ -16,7 +16,7 @@
 
 window.CREDIBLE_ARTICLES = [
   {
-    title: "North Korea Deleted Reunification From Its Constitution. Read It as a Victory Declaration.",
+    title: "The Country That Refused to Die: How North Korea Survived Every Prediction of Its Collapse",
     url: "north-korea-constitution-reunification.html",
     section: "World",
     excerpt: "American intelligence spent four decades predicting the regime's collapse. In March 2026, Pyongyang quietly rewrote its founding document to define itself as a permanent, bounded state.",
