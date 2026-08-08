@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "Iran and Oman Finalize a Plan for Hormuz. Tehran Says the Strait Stays Shut Anyway.",
+    url: "iran-oman-hormuz-six-conditions.html",
+    section: "World",
+    excerpt: "Iranian and Omani negotiators have settled the technical architecture for managing Persian Gulf shipping. Separately, Iran's top security body says the strait stays closed regardless.",
+    date: "9 Aug 2026"
+  },
+  {
     title: "The Country That Refused to Die: How North Korea Survived Every Prediction of Its Collapse",
     url: "north-korea-constitution-reunification.html",
     section: "World",
