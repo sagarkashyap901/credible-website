@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "Trump May End Iran War Without a Nuclear Deal",
+    url: "trump-may-end-iran-war-without-nuclear-deal.html",
+    section: "World",
+    excerpt: "Iran's escalating price for reopening the Strait of Hormuz, a 30 percent jump in US gas prices, and a midterm clock are reshaping what winning the Iran war even means for Trump.",
+    date: "12 Aug 2026"
+  },
+  {
     title: "Iran and Oman Finalize a Plan for Hormuz. Tehran Says the Strait Stays Shut Anyway.",
     url: "iran-oman-hormuz-six-conditions.html",
     section: "World",
