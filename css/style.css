@@ -2780,17 +2780,56 @@ body[data-premium="true"].paywall-unlocked .paywall-gate {
   .article-hero { margin: 0 auto 26px; }
   .article-hero figcaption { font-size: 12px; margin-top: 8px; }
 
-  /* Body: 20px/1.5 (pitch 30) -> 18px/1.56 (pitch 28.1).
-     28px pitch is the exact figure BOTH papers use. At 18px, Libre
-     Baskerville's glyph band lands at ~16.8px, sitting between WSJ's 16.3
-     and WaPo's 17.3 — so it reads at the same visual size as theirs
-     despite Baskerville's larger x-height. */
-  .prose { font-size: 18px; line-height: 1.56; }
-  .prose p { margin: 0 0 1.1em; }
-  .prose h2 { font-size: 21px; line-height: 1.2; }
-  .prose h3 { font-size: 18.5px; }
+  /* Body: 16.5px / 1.70 (pitch 28.05).
+     CORRECTED 14 Aug 2026 (second pass). The first pass set 18px on the
+     assumption that Libre Baskerville's inked height ran ~0.935x its
+     font-size. Re-measured against the Washington Post on the same device,
+     the real ratio is 1.072x — Baskerville's x-height and descenders are
+     far larger than estimated, so 18px rendered an inked band of 19.3px
+     against WaPo's 17.3px, i.e. still 11.5% too big even though the line
+     pitch already matched. 16.5px x 1.072 = 17.7px inked, which is within
+     2% of WaPo, while 16.5 x 1.70 keeps the 28px pitch both papers use.
+     Set font-size and line-height together — pitch must stay at 28px. */
+  .prose { font-size: 16.5px; line-height: 1.70; }
+  .prose p { margin: 0 0 1.15em; }
+
+  /* In-article subheads: 21px -> 26px.
+     The first pass shrank these too far. Measured inked bands:
+     WaPo subhead 24.3px vs body 17.3px = 1.40x contrast.
+     Credible was 19.7px vs 19.3px = 1.02x — almost no contrast at all,
+     which is why the subheads read as too small next to the body.
+     .prose h2 is set in Inter (ratio ~0.938), so 26px gives a 24.4px
+     inked band and restores a 1.38x contrast, matching WaPo. */
+  .prose h2 { font-size: 26px; line-height: 1.22; }
+  .prose h3 { font-size: 21px; line-height: 1.25; }
   .prose blockquote { font-size: 20px; }
 
   .inline-photo { margin: 26px auto; }
   .inline-photo figcaption { font-size: 12px; margin-top: 8px; }
+}
+
+/* ==========================================================================
+   28. IMAGE CORNER RADIUS — squarer, more newspaper-like (14 Aug 2026)
+   Photos previously used --radius (10px), softening to 8px on mobile, which
+   reads as consumer-app rounding rather than editorial. Dropping images to
+   4px keeps just enough softening to avoid hard clipping while sitting much
+   closer to how WSJ and the Washington Post present pictures.
+
+   Scoped to PHOTOS ONLY — buttons, the paywall box, chart cards and the
+   homepage card containers keep --radius, so nothing else in the design
+   shifts. Placed last so it also overrides the earlier mobile 8px rule.
+   ========================================================================== */
+.art,
+.article-hero img,
+.inline-photo img,
+.figure img {
+  border-radius: 4px;
+}
+
+@media (max-width: 680px) {
+  .article-hero img,
+  .inline-photo img,
+  .art {
+    border-radius: 4px;
+  }
 }
