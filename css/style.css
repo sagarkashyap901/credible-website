@@ -2800,8 +2800,8 @@ body[data-premium="true"].paywall-unlocked .paywall-gate {
      which is why the subheads read as too small next to the body.
      .prose h2 is set in Inter (ratio ~0.938), so 26px gives a 24.4px
      inked band and restores a 1.38x contrast, matching WaPo. */
-  .prose h2 { font-size: 26px; line-height: 1.22; }
-  .prose h3 { font-size: 21px; line-height: 1.25; }
+  .prose h2 { font-size: 25px; line-height: 1.22; }
+  .prose h3 { font-size: 20px; line-height: 1.25; }
   .prose blockquote { font-size: 20px; }
 
   .inline-photo { margin: 26px auto; }
@@ -2831,5 +2831,51 @@ body[data-premium="true"].paywall-unlocked .paywall-gate {
   .inline-photo img,
   .art {
     border-radius: 4px;
+  }
+}
+
+/* ==========================================================================
+   29. RAGGED RIGHT EDGE — hyphenation on narrow columns (14 Aug 2026)
+
+   MEASURED PROBLEM (Credible article, iPhone 15 Pro, 393 CSS px):
+     column width available   360px
+     average line ended at    317px  -> 76px of empty space per line
+     worst line ended at      295px  -> 98px empty, 27% of the column
+     longest line still fell  41px short of the right edge
+     (Washington Post, same device: longest line falls only 22px short)
+
+   CAUSE: Libre Baskerville is a wide typeface, and with hyphenation off a
+   long word cannot be split — so words like "semi-negotiating",
+   "discrepancy" and "negotiations" get pushed whole onto the next line,
+   stranding a large block of empty space behind them. This is why it looks
+   worse on Credible than on WaPo despite identical margins: their narrower
+   typeface fits more per line, so a pushed word costs less.
+
+   FIX: allow automatic hyphenation. This is standard practice for narrow
+   mobile columns and is exactly what print newspapers do. `hyphens: auto`
+   relies on the browser's language dictionary, which works because every
+   page declares <html lang="en">.
+
+   Applied to running text ONLY — never headings, where a hyphenated
+   headline looks broken. Also drops `text-wrap: pretty` on mobile: it
+   optimises against orphans by pulling words down a line, which works
+   against filling the measure on an already-narrow column.
+   ========================================================================== */
+@media (max-width: 680px) {
+  .prose p,
+  .prose li {
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    text-wrap: wrap;
+  }
+
+  /* Never hyphenate display type. */
+  .prose h2,
+  .prose h3,
+  .article-header h1,
+  .standfirst,
+  .prose blockquote {
+    hyphens: none;
+    -webkit-hyphens: none;
   }
 }
