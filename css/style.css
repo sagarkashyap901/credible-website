@@ -2554,6 +2554,18 @@ body[data-premium="true"].paywall-unlocked .paywall-gate {
   .inline-photo.portrait { max-width: 320px; }
 }
 
+/* .small further narrows a portrait image — for cases like a tall archival
+   scan (e.g. a thangka painting) where even 480px reads as too dominant
+   between paragraphs of running text. Quality is untouched; only the
+   DISPLAY width shrinks via CSS, the source file itself is not downscaled
+   more than necessary. */
+.inline-photo.portrait.small {
+  max-width: 260px;
+}
+@media (max-width: 640px) {
+  .inline-photo.portrait.small { max-width: 200px; }
+}
+
 /* ==========================================================================
    25. LAUNCH OFFER — 25% off, ₹119 → ₹89/month (2 Aug 2026)
    Applied wherever the site shows a price (.paywall .price). Badge sits

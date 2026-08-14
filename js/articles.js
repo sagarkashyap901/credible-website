@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "Why China Really Wants Arunachal Pradesh",
+    url: "why-china-wants-arunachal-pradesh.html",
+    section: "India",
+    excerpt: "Inside Beijing's six-decade campaign to contest an Indian state it has never governed.",
+    date: "14 Aug 2026"
+  },
+  {
     title: "Trump May End Iran War Without a Nuclear Deal",
     url: "trump-may-end-iran-war-without-nuclear-deal.html",
     section: "World",
