@@ -2847,47 +2847,30 @@ body[data-premium="true"].paywall-unlocked .paywall-gate {
 }
 
 /* ==========================================================================
-   29. RAGGED RIGHT EDGE — hyphenation on narrow columns (14 Aug 2026)
+   29. NO HYPHENATION ON MOBILE — explicit, deliberate (15 Aug 2026)
 
-   MEASURED PROBLEM (Credible article, iPhone 15 Pro, 393 CSS px):
-     column width available   360px
-     average line ended at    317px  -> 76px of empty space per line
-     worst line ended at      295px  -> 98px empty, 27% of the column
-     longest line still fell  41px short of the right edge
-     (Washington Post, same device: longest line falls only 22px short)
+   HISTORY: this section previously turned ON `hyphens: auto` for mobile
+   body text, to fix measured wasted space at the right edge (Libre
+   Baskerville is wide, so long words were getting pushed whole to the next
+   line, stranding up to 98px of empty space per line — see the git history
+   for the original measurements if that context is ever needed again).
 
-   CAUSE: Libre Baskerville is a wide typeface, and with hyphenation off a
-   long word cannot be split — so words like "semi-negotiating",
-   "discrepancy" and "negotiations" get pushed whole onto the next line,
-   stranding a large block of empty space behind them. This is why it looks
-   worse on Credible than on WaPo despite identical margins: their narrower
-   typeface fits more per line, so a pushed word costs less.
+   Sagar explicitly asked for hyphenation to be REMOVED: he does not want
+   a word ever split with a dash across two lines, full stop, even though
+   this brings back some of that wasted right-edge space. This is a
+   deliberate, explicit trade-off he chose knowingly — do not "fix" the
+   ragged right edge by reintroducing hyphenation without asking first.
 
-   FIX: allow automatic hyphenation. This is standard practice for narrow
-   mobile columns and is exactly what print newspapers do. `hyphens: auto`
-   relies on the browser's language dictionary, which works because every
-   page declares <html lang="en">.
-
-   Applied to running text ONLY — never headings, where a hyphenated
-   headline looks broken. Also drops `text-wrap: pretty` on mobile: it
-   optimises against orphans by pulling words down a line, which works
-   against filling the measure on an already-narrow column.
+   `hyphens: none` is set explicitly (not just omitted) on `.prose p` and
+   `.prose li` so this can never be silently overridden by a future rule
+   or a browser default — this selector is now the single source of truth
+   for whether mobile body text hyphenates. It must always say "none."
    ========================================================================== */
 @media (max-width: 680px) {
   .prose p,
   .prose li {
-    hyphens: auto;
-    -webkit-hyphens: auto;
-    text-wrap: wrap;
-  }
-
-  /* Never hyphenate display type. */
-  .prose h2,
-  .prose h3,
-  .article-header h1,
-  .standfirst,
-  .prose blockquote {
     hyphens: none;
     -webkit-hyphens: none;
+    text-wrap: wrap;
   }
 }
