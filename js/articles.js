@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "The Golden Waterway",
+    url: "ice-silk-road-malacca-dilemma.html",
+    section: "World",
+    excerpt: "China built a shortcut around the world's most dangerous chokepoints. It only works four months a year, and Russia holds the keys.",
+    date: "21 Aug 2026"
+  },
+  {
     title: "Why China Really Wants Arunachal Pradesh",
     url: "why-china-wants-arunachal-pradesh.html",
     section: "India",
