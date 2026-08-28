@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "CIA Chief Warned Putin Against Striking NATO. Now Officials Weigh a Nuclear Option.",
+    url: "cia-nato-nuclear-warning.html",
+    section: "World",
+    excerpt: "A data-based account of the economic war behind the diplomatic one. Russia's refineries are running at a 24-year low and its budget deficit is set to double, even as global oil prices rise.",
+    date: "28 Aug 2026"
+  },
+  {
     title: "The Golden Waterway",
     url: "ice-silk-road-malacca-dilemma.html",
     section: "World",
