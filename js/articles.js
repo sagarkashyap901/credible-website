@@ -16,10 +16,10 @@
 
 window.CREDIBLE_ARTICLES = [
   {
-    title: "US Claims Majority Control Over Venezuela's Oil. Can the Deal Legally Hold Up?",
+    title: "Washington and Caracas Announced the Same Oil Deal. They Described Two Different Agreements.",
     url: "venezuela-oil-deal-legal-foundation.html",
     section: "World",
-    excerpt: "The Trump administration announced majority control over output from 17 Venezuelan oil fields holding 65 billion barrels. It rests on a structure that Venezuela's own amended hydrocarbons law may not permit.",
+    excerpt: "US officials say a new venture holds a 100-year concession over 17 Venezuelan oil fields, with Washington taking 55 percent of output. Venezuela's interim president says the project runs 25 years instead.",
     date: "29 Aug 2026"
   },
   {
