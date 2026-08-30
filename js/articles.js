@@ -16,7 +16,7 @@
 
 window.CREDIBLE_ARTICLES = [
   {
-    title: "Washington and Caracas Announced the Same Oil Deal. They Described Two Different Agreements.",
+    title: "US Claims Majority Control Over Venezuela's Oil. Can the Deal Legally Hold Up?",
     url: "venezuela-oil-deal-legal-foundation.html",
     section: "World",
     excerpt: "US officials say a new venture holds a 100-year concession over 17 Venezuelan oil fields, with Washington taking 55 percent of output. Venezuela's interim president says the project runs 25 years instead.",
