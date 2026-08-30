@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "US Claims Majority Control Over Venezuela's Oil. Can the Deal Legally Hold Up?",
+    url: "venezuela-oil-deal-legal-foundation.html",
+    section: "World",
+    excerpt: "The Trump administration announced majority control over output from 17 Venezuelan oil fields holding 65 billion barrels. It rests on a structure that Venezuela's own amended hydrocarbons law may not permit.",
+    date: "29 Aug 2026"
+  },
+  {
     title: "CIA Chief Warned Putin Against Striking NATO. Now Officials Weigh a Nuclear Option.",
     url: "cia-nato-nuclear-warning.html",
     section: "World",
