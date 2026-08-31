@@ -16,6 +16,13 @@
 
 window.CREDIBLE_ARTICLES = [
   {
+    title: "India Grew 7.8 Percent. The Growth Was Broad. The Deflator Is the Question.",
+    url: "india-q1-fy27-gdp.html",
+    section: "India",
+    excerpt: "Investment, manufacturing, services, consumption and exports all contributed in April to June. The harder questions are about a GDP deflator far below wholesale inflation and a deficient monsoon.",
+    date: "31 Aug 2026"
+  },
+  {
     title: "US Claims Majority Control Over Venezuela's Oil. Can the Deal Legally Hold Up?",
     url: "venezuela-oil-deal-legal-foundation.html",
     section: "World",
