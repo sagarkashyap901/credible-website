@@ -2874,3 +2874,200 @@ body[data-premium="true"].paywall-unlocked .paywall-gate {
     text-wrap: wrap;
   }
 }
+
+/* ==========================================================================
+   30. THE CREDIBLE BRIEFING (24 Sep 2026)
+   Homepage strip + WIRE ticker, both fed live from Supabase by js/briefing.js.
+   Both stay `hidden` in the markup until the first brief loads, so an empty
+   table never shows a broken-looking empty section — see that file.
+
+   Horizontal scroll deliberately does NOT intercept the mouse wheel: the
+   track only overflows on the x-axis (overflow-y: hidden, no JS wheel
+   handler), so a vertical wheel scroll always falls through to the page.
+   Desktop mouse users get the arrow buttons instead — this is intentional,
+   not an oversight, see rules discussion in the build brief.
+   ========================================================================== */
+.briefing-section { padding: 40px 0 8px; }
+.briefing-section .section-head { margin-bottom: 18px; }
+.briefing-section .section-head .more { color: var(--accent); font-weight: 700; }
+.briefing-section .section-head .more:hover { color: var(--accent-ink); }
+
+.briefing-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.briefing-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 2px 10px;
+  flex: 1;
+  min-width: 0;
+  scroll-padding-left: 2px;
+}
+.briefing-track::-webkit-scrollbar { display: none; }
+
+.brief-card {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 260px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  background: var(--paper);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.brief-card:hover { border-color: var(--accent); box-shadow: var(--shadow-card); transform: translateY(-3px); }
+.brief-card:hover .brief-headline { color: var(--accent); }
+
+.brief-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.brief-topic {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.brief-dateline {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--gray);
+  letter-spacing: .03em;
+  white-space: nowrap;
+}
+.brief-number {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 32px;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.brief-card .brief-dateline { display: block; }
+
+.brief-card .brief-headline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+  transition: color .18s ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.brief-card .brief-summary {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.48;
+  color: var(--ink-soft);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;   /* card stays a fixed height; longer excerpts just clip here */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.briefing-arrow {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
+}
+.briefing-arrow:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.briefing-arrow svg { width: 16px; height: 16px; }
+
+/* Divider between the briefing strip and the research articles below */
+.section-divider { padding: 22px 0 0; }
+.section-divider .container { display: flex; align-items: center; gap: 16px; }
+.section-divider-line { flex: 1; height: 1px; background: var(--line); }
+.section-divider-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gray);
+  white-space: nowrap;
+}
+
+@media (max-width: 680px) {
+  .briefing-arrow { display: none; }  /* mouse-only; touch users swipe the strip directly */
+  .brief-card { width: 78vw; max-width: 300px; }
+}
+
+/* ---------- 30b. Full briefing page (briefing.html) ---------- */
+.briefing-full-list { display: flex; flex-direction: column; }
+.briefing-full-entry {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 84px;  /* clears the sticky topbar (64px) when a homepage card links to #brief-<id> */
+}
+.briefing-full-entry:last-child { border-bottom: none; }
+.briefing-full-entry .brief-number { font-size: 30px; margin: 8px 0 10px; }
+.brief-headline-full {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(19px, 2.2vw, 23px);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 0 0 10px;
+}
+.brief-summary-full {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0 0 14px;
+  max-width: 680px;
+}
+.brief-sources {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--gray);
+  margin: 0 0 8px;
+}
+.brief-sources a { color: var(--gray); text-decoration: underline; }
+.brief-sources a:hover { color: var(--accent); }
+.brief-analysis-link {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent);
+}
+.brief-analysis-link:hover { color: var(--accent-ink); }
+
+.briefing-empty {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  color: var(--gray);
+  padding: 40px 0;
+}

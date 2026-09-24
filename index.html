@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Credible — Geopolitics, India & Tech, decoded</title>
+  <title>Credible: Geopolitics, India & Tech, decoded</title>
   <meta name="description" content="Credible decodes geopolitics, Indian politics, global affairs and technology for a new generation of readers.">
   <link rel="canonical" href="https://credible-website-virid.vercel.app/">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <meta property="og:site_name" content="Credible">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Credible — Geopolitics, India & Tech, decoded">
+  <meta property="og:title" content="Credible: Geopolitics, India & Tech, decoded">
   <meta property="og:description" content="Credible decodes geopolitics, Indian politics, global affairs and technology for a new generation of readers.">
   <meta property="og:url" content="https://credible-website-virid.vercel.app/">
   <meta property="og:image" content="https://credible-website-virid.vercel.app/og-card.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Credible — Geopolitics, India & Tech, decoded">
+  <meta name="twitter:title" content="Credible: Geopolitics, India & Tech, decoded">
   <meta name="twitter:description" content="Credible decodes geopolitics, Indian politics, global affairs and technology for a new generation of readers.">
   <meta name="twitter:image" content="https://credible-website-virid.vercel.app/og-card.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260815a">
+  <link rel="stylesheet" href="css/style.css?v=20260924a">
   <script>if(matchMedia("(prefers-reduced-motion: no-preference)").matches)document.documentElement.classList.add("motion")</script>
   <script type="application/ld+json">
   {
@@ -31,7 +31,7 @@
         "name": "Credible",
         "url": "https://credible-website-virid.vercel.app/",
         "logo": "https://credible-website-virid.vercel.app/favicon.svg",
-        "description": "Geopolitics, Indian politics, global affairs and technology — decoded for a new generation.",
+        "description": "Geopolitics, Indian politics, global affairs and technology: decoded for a new generation.",
         "foundingDate": "2026",
         "founder": { "@type": "Person", "name": "Sagar Kashyap" }
       },
@@ -71,21 +71,37 @@
       </div>
     </div>
   </header>
-  <!-- Wire ticker -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span><i>WIRE</i> <b>ECONOMY</b> India Q1 GDP grows 7.8%, beats all forecasts</span>
-      <span><b>VENEZUELA</b> US says 100-year oil deal, Rodríguez says 25 — accounts clash</span>
-      <span><b>RUSSIA</b> Bloomberg: Kremlin officials weigh nuclear option as talks stall</span>
-      <span><b>ARCTIC</b> China's Ice Silk Road cargo ship reaches Felixstowe in 20 days</span>
-      <span><i>WIRE</i> <b>ECONOMY</b> India Q1 GDP grows 7.8%, beats all forecasts</span>
-      <span><b>VENEZUELA</b> US says 100-year oil deal, Rodríguez says 25 — accounts clash</span>
-      <span><b>RUSSIA</b> Bloomberg: Kremlin officials weigh nuclear option as talks stall</span>
-      <span><b>ARCTIC</b> China's Ice Silk Road cargo ship reaches Felixstowe in 20 days</span>
-    </div>
-  </div>
 
   <main>
+    <!-- The Credible Briefing — populated live from Supabase by js/briefing.js.
+         Stays hidden until the first brief loads. -->
+    <section class="section briefing-section" aria-label="The Credible Briefing" hidden>
+      <div class="container">
+        <div class="section-head">
+          <h2>The Credible Briefing</h2>
+          <a class="more" href="briefing.html">Today's full briefing →</a>
+        </div>
+        <div class="briefing-wrap">
+          <button class="briefing-arrow briefing-arrow-prev" type="button" aria-label="Scroll briefing left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div class="briefing-track" id="briefingTrack"></div>
+          <button class="briefing-arrow briefing-arrow-next" type="button" aria-label="Scroll briefing right">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider between the briefing and the research articles below -->
+    <div class="section-divider" role="presentation" hidden>
+      <div class="container">
+        <span class="section-divider-line"></span>
+        <span class="section-divider-label">Analysis</span>
+        <span class="section-divider-line"></span>
+      </div>
+    </div>
+
     <!-- Lead: top three stories -->
     <section class="section" style="padding-top:40px">
       <div class="container">
@@ -461,17 +477,17 @@
           <article class="card reveal">
             <a href="india.html"><figure class="art art-2"></figure></a>
             <h3><a href="india.html">India</a></h3>
-            <p class="excerpt">Borders, defense, politics and the economy — India's strategic picture, minus the noise.</p>
+            <p class="excerpt">Borders, defense, politics and the economy: India's strategic picture, minus the noise.</p>
           </article>
           <article class="card reveal">
             <a href="world.html"><figure class="art art-5"></figure></a>
             <h3><a href="world.html">World</a></h3>
-            <p class="excerpt">From Hormuz to the High North — the power shifts shaping this decade, decoded.</p>
+            <p class="excerpt">From Hormuz to the High North: the power shifts shaping this decade, decoded.</p>
           </article>
           <article class="card reveal">
             <a href="tech.html"><figure class="art art-3"></figure></a>
             <h3><a href="tech.html">AI &amp; Tech</a></h3>
-            <p class="excerpt">Chips, compute and the new tech cold war — where silicon meets statecraft.</p>
+            <p class="excerpt">Chips, compute and the new tech cold war: where silicon meets statecraft.</p>
           </article>
         </div>
       </div>
@@ -483,7 +499,7 @@
     <div class="footer-inner">
       <div>
         <a class="brand" href="index.html">Credible<span class="dot"></span></a>
-        <p class="tagline">Geopolitics, Indian politics, global affairs and technology — reported clearly, sourced carefully, built for a generation that fact-checks everything.</p>
+        <p class="tagline">Geopolitics, Indian politics, global affairs and technology: reported clearly, sourced carefully, built for a generation that fact-checks everything.</p>
       </div>
       <div>
         <h4>Sections</h4>
@@ -548,6 +564,7 @@
   <script src="js/session-ui.js?v=20260802e"></script>
   <script src="js/membership.js?v=20260802e"></script>
   <script src="js/main.js?v=20260802e"></script>
+  <script src="js/briefing.js?v=20260924a"></script>
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
   <script defer src="/_vercel/insights/script.js"></script>
 </body>
